@@ -1,0 +1,12 @@
+---
+description: Engineering and performance guidelines for Little Valley 3D game
+globs: src/**/*
+---
+# Little Valley AI Development Guidelines
+
+1. **Check Existing Code First**: Always search the codebase before creating a new component or function. Reuse existing helpers in `src/utils/` and data structures in `src/data/`.
+2. **Zero Allocations in `useFrame`**: Never instantiate objects (`new THREE.Vector3()`, `new THREE.Color()`, closures) inside animation frame callbacks. Reuse module-scoped temporary variables or refs.
+3. **Use Instancing**: Environmental assets (trees, rocks, flowers, bushes, grass) must use `InstancedMesh` to keep draw calls below 100.
+4. **Zustand Selectors**: Always use fine-grained selectors when accessing Zustand stores. Never subscribe to frequently mutating state in rendering components.
+5. **Preserve Gameplay**: Keep all existing farming, inventory, time, animal, and building features intact.
+6. **Strict TypeScript**: Avoid `any` and magic numbers. Use data-driven configs.

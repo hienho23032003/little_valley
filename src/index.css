@@ -1,0 +1,246 @@
+:root {
+  --app-height: 100%;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+
+  /* Default Desktop Joystick Anchor (Bottom-Left) */
+  --joystick-bottom: calc(26px + env(safe-area-inset-bottom, 0px));
+  --joystick-left: calc(24px + env(safe-area-inset-left, 0px));
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  height: 100dvh;
+  height: var(--app-height, 100dvh);
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #d8ecf8;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  touch-action: none;
+  -webkit-text-size-adjust: 100%;
+}
+
+button {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ========================================================
+   1. DESKTOP VIEWPORT & CONTROLS (Mouse + Keyboard)
+   Preserves existing desktop layout and keyboard guidance
+   ======================================================== */
+@media (min-width: 1025px) and (hover: hover) and (pointer: fine) {
+  /* Position desktop keyboard controls helper cleanly above bottom-left virtual joystick */
+  .desktop-controls-hint {
+    display: flex !important;
+    margin-bottom: 125px;
+  }
+
+  /* Show desktop keyboard interaction prompt [E] */
+  .desktop-keyboard-popover {
+    display: flex !important;
+  }
+
+  /* Hide mobile tutorial hint bubble on desktop */
+  .joystick-tutorial-hint {
+    display: none !important;
+  }
+}
+
+/* ========================================================
+   2. TABLET / iPAD & TOUCH RESPONSIVE LAYOUT
+   (iPad, iPad Mini, iPad Air, iPad Pro, Android Tablets, Touch Screens, Screens <= 1024px)
+   ======================================================== */
+@media (pointer: coarse), (hover: none), (max-width: 1024px) {
+  /* 2. HIDE KEYBOARD CONTROL INSTRUCTION ON TABLET / TOUCH */
+  .desktop-controls-hint {
+    display: none !important;
+  }
+
+  /* Hide desktop keyboard shortcut hints [B], [I], [E] on touch */
+  .keyboard-shortcut-hint {
+    display: none !important;
+  }
+
+  /* HIDE THE [E] / INTERACT KEYBOARD POPOVER ON TABLET / TOUCH */
+  .desktop-keyboard-popover {
+    display: none !important;
+  }
+
+  /* 4 & 5. SEPARATE BUILD AND BACKPACK TO OPPOSITE SIDES */
+  /* Remove flex grouping on tablet so buttons position into dedicated side zones */
+  .action-buttons-group {
+    display: contents !important;
+  }
+
+  /* ZONE 3 (RIGHT SIDE): PRIMARY INTERACT BUTTON positioned right at thumb's natural resting spot */
+  .action-btn-interact {
+    position: fixed !important;
+    right: calc(clamp(20px, 3.2vw, 32px) + env(safe-area-inset-right, 0px)) !important;
+    bottom: calc(clamp(95px, 11vh, 115px) + env(safe-area-inset-bottom, 0px)) !important;
+    z-index: 46 !important;
+    padding: 12px 20px !important;
+    font-size: 14px !important;
+    border-radius: 16px !important;
+    box-shadow: 0 8px 26px rgba(44, 62, 53, 0.28) !important;
+  }
+
+  /* BUILD BUTTON positioned on the right side above Interact button */
+  .action-btn-build {
+    position: fixed !important;
+    right: calc(clamp(20px, 3.2vw, 32px) + env(safe-area-inset-right, 0px)) !important;
+    bottom: calc(clamp(155px, 18vh, 180px) + env(safe-area-inset-bottom, 0px)) !important;
+    z-index: 45 !important;
+    padding: 10px 18px !important;
+    font-size: 13px !important;
+    border-radius: 14px !important;
+    box-shadow: 0 8px 24px rgba(44, 62, 53, 0.22) !important;
+  }
+
+  /* COINS BADGE: Positioned cleanly on the right side above Build button */
+  .action-badge-coins {
+    position: fixed !important;
+    right: calc(clamp(20px, 3.2vw, 32px) + env(safe-area-inset-right, 0px)) !important;
+    bottom: calc(clamp(210px, 24.5vh, 235px) + env(safe-area-inset-bottom, 0px)) !important;
+    z-index: 45 !important;
+    padding: 8px 14px !important;
+    font-size: 13px !important;
+    border-radius: 12px !important;
+    box-shadow: 0 8px 24px rgba(44, 62, 53, 0.16) !important;
+  }
+
+  /* RESET BUTTON: Positioned on the right side above Coins */
+  .action-btn-reset {
+    position: fixed !important;
+    right: calc(clamp(20px, 3.2vw, 32px) + env(safe-area-inset-right, 0px)) !important;
+    bottom: calc(clamp(255px, 29.5vh, 280px) + env(safe-area-inset-bottom, 0px)) !important;
+    z-index: 45 !important;
+    padding: 8px 12px !important;
+    font-size: 12px !important;
+    border-radius: 12px !important;
+  }
+}
+
+/* Tablet Portrait Mode: Generous vertical space */
+@media ((pointer: coarse) or (hover: none) or (max-width: 1024px)) and (orientation: portrait) {
+  :root {
+    --joystick-bottom: calc(clamp(90px, 10vh, 110px) + env(safe-area-inset-bottom, 0px));
+    --joystick-left: calc(clamp(40px, 5.5vw, 60px) + env(safe-area-inset-left, 0px));
+  }
+
+  .action-btn-backpack {
+    position: fixed !important;
+    left: calc(clamp(40px, 5.5vw, 60px) + env(safe-area-inset-left, 0px)) !important;
+    bottom: calc(clamp(240px, 26vh, 270px) + env(safe-area-inset-bottom, 0px)) !important;
+    z-index: 45 !important;
+    padding: 10px 18px !important;
+    font-size: 13px !important;
+    border-radius: 14px !important;
+    box-shadow: 0 8px 24px rgba(44, 62, 53, 0.22) !important;
+  }
+}
+
+/* Tablet Landscape Mode: Compact vertical height (768-820px) */
+@media ((pointer: coarse) or (hover: none) or (max-width: 1024px)) and (orientation: landscape) {
+  :root {
+    --joystick-bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+    --joystick-left: calc(clamp(28px, 3.5vw, 45px) + env(safe-area-inset-left, 0px));
+  }
+
+  .action-btn-backpack {
+    position: fixed !important;
+    left: calc(clamp(28px, 3.5vw, 45px) + env(safe-area-inset-left, 0px)) !important;
+    bottom: calc(155px + env(safe-area-inset-bottom, 0px)) !important;
+    z-index: 45 !important;
+    padding: 10px 18px !important;
+    font-size: 13px !important;
+    border-radius: 14px !important;
+    box-shadow: 0 8px 24px rgba(44, 62, 53, 0.22) !important;
+  }
+}
+
+/* ========================================================
+   3. COMPACT MOBILE SCREEN ADJUSTMENTS (Width <= 600px)
+   ======================================================== */
+@media (max-width: 600px) {
+  :root {
+    --joystick-bottom: calc(clamp(88px, 11vh, 105px) + env(safe-area-inset-bottom, 0px));
+    --joystick-left: calc(clamp(32px, 5vw, 50px) + env(safe-area-inset-left, 0px));
+  }
+
+  /* On compact screens, hide long button text labels while keeping emoji icons */
+  .action-btn-text {
+    display: none !important;
+  }
+
+  .action-btn-backpack {
+    left: calc(14px + env(safe-area-inset-left, 0px)) !important;
+    bottom: calc(clamp(210px, 25vh, 235px) + env(safe-area-inset-bottom, 0px)) !important;
+    padding: 10px 14px !important;
+  }
+
+  .action-btn-interact {
+    right: calc(14px + env(safe-area-inset-right, 0px)) !important;
+    bottom: calc(clamp(84px, 10vh, 100px) + env(safe-area-inset-bottom, 0px)) !important;
+    padding: 11px 16px !important;
+  }
+
+  .action-btn-build {
+    right: calc(14px + env(safe-area-inset-right, 0px)) !important;
+    bottom: calc(clamp(138px, 16vh, 155px) + env(safe-area-inset-bottom, 0px)) !important;
+    padding: 10px 14px !important;
+  }
+
+  .action-badge-coins {
+    right: calc(14px + env(safe-area-inset-right, 0px)) !important;
+    bottom: calc(clamp(188px, 21.5vh, 205px) + env(safe-area-inset-bottom, 0px)) !important;
+    padding: 6px 10px !important;
+  }
+
+  .action-btn-reset {
+    right: calc(14px + env(safe-area-inset-right, 0px)) !important;
+    bottom: calc(clamp(230px, 26vh, 248px) + env(safe-area-inset-bottom, 0px)) !important;
+    padding: 6px 10px !important;
+  }
+}
+
+/* Animations */
+@keyframes floatUp {
+  0% {
+    opacity: 0;
+    transform: translateY(16px) scale(0.92);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
