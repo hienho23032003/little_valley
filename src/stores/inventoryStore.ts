@@ -44,7 +44,7 @@ function createInitialSlots(): InventorySlot[] {
     quantity: 0,
   }));
 
-  // Initial Seed & Tool Setup for Hotbar (Slots 0 to 8, matching example [🌱][🌱][🌱][💧][🪓][⛏️])
+  // Initial Seed & Tool Setup for Hotbar (Slots 0 to 8: Seeds, Water, Hoe, Axe, Pickaxe, Fishing Rod)
   slots[0] = { slotIndex: 0, itemId: 'wheat_seed', quantity: 8 };
   slots[1] = { slotIndex: 1, itemId: 'corn_seed', quantity: 8 };
   slots[2] = { slotIndex: 2, itemId: 'carrot_seed', quantity: 8 };
@@ -53,13 +53,14 @@ function createInitialSlots(): InventorySlot[] {
   slots[5] = { slotIndex: 5, itemId: 'hoe', quantity: 1 };
   slots[6] = { slotIndex: 6, itemId: 'axe', quantity: 1 };
   slots[7] = { slotIndex: 7, itemId: 'pickaxe', quantity: 1 };
-  slots[8] = { slotIndex: 8, itemId: 'wood', quantity: 64 };
+  slots[8] = { slotIndex: 8, itemId: 'fishing_rod_1', quantity: 1 };
 
   // Initial Backpack Items (Slots 9 to 23)
-  slots[9] = { slotIndex: 9, itemId: 'stone', quantity: 48 };
-  slots[10] = { slotIndex: 10, itemId: 'wheat', quantity: 15 }; // Stacked identical items
-  slots[11] = { slotIndex: 11, itemId: 'carrot', quantity: 6 };
-  slots[12] = { slotIndex: 12, itemId: 'bread', quantity: 3 };
+  slots[9] = { slotIndex: 9, itemId: 'wood', quantity: 64 };
+  slots[10] = { slotIndex: 10, itemId: 'stone', quantity: 48 };
+  slots[11] = { slotIndex: 11, itemId: 'wheat', quantity: 15 };
+  slots[12] = { slotIndex: 12, itemId: 'worm', quantity: 10 };
+  slots[13] = { slotIndex: 13, itemId: 'bread', quantity: 3 };
 
   return slots;
 }

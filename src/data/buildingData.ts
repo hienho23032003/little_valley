@@ -86,6 +86,30 @@ export const BUILDINGS: Record<string, BuildingDefinition> = {
     },
     size: [3.5, 3.5],
   },
+  water_tower: {
+    id: 'water_tower',
+    name: 'Water Tower',
+    description: 'A tall timber elevated reservoir providing fresh water for crops and animals.',
+    icon: '🚰',
+    cost: {
+      wood: 30,
+      stone: 15,
+      coins: 350,
+    },
+    size: [3, 3],
+  },
+  well: {
+    id: 'well',
+    name: 'Farm Well',
+    description: 'A rustic stone well tapping deep spring water for unlimited irrigation.',
+    icon: '🪣',
+    cost: {
+      wood: 10,
+      stone: 20,
+      coins: 150,
+    },
+    size: [2, 2],
+  },
 };
 
 export const BUILDING_LIST = Object.values(BUILDINGS);

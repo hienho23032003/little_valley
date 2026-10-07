@@ -3,6 +3,13 @@ import { PALETTE } from '../utils/colors';
 import { ModularBuildingConfig } from '../data/buildingConfigs';
 import { ModularBuilding } from './buildings/modular/BuildingModular';
 
+import {
+  MedievalCottage4x4,
+  MedievalShop6x4,
+  MedievalTownHall6x6,
+  MedievalBlacksmith6x4,
+} from './buildings/medieval/MedievalHouseModel';
+
 export interface HouseProps {
   config?: ModularBuildingConfig;
   position?: [number, number, number];
@@ -24,6 +31,39 @@ export const House: React.FC<HouseProps> = React.memo(({
   hasChimney = true,
   hasPorch = true,
 }: HouseProps) => {
+  const actualPos = config?.position ?? position;
+  const actualRot = config?.rotation ?? rotation;
+  const actualScale = config?.scale ?? scale;
+  const type = config?.type;
+
+  if (type === 'town_hall') {
+    return <MedievalTownHall6x6 position={actualPos} rotation={actualRot} scale={actualScale} />;
+  }
+
+  if (type === 'general_store') {
+    return <MedievalShop6x4 position={actualPos} rotation={actualRot} scale={actualScale} hasChimney={config?.hasChimney} />;
+  }
+
+  if (type === 'blacksmith') {
+    return <MedievalBlacksmith6x4 position={actualPos} rotation={actualRot} scale={actualScale} />;
+  }
+
+  if (type === 'workshop') {
+    return <MedievalCottage4x4 position={actualPos} rotation={actualRot} scale={actualScale} wallType="woodgrid" hasPorch={true} />;
+  }
+
+  if (type === 'cottage') {
+    return <MedievalCottage4x4 position={actualPos} rotation={actualRot} scale={actualScale} wallType="woodgrid" doorType="flat" hasVines={true} />;
+  }
+
+  if (type === 'farmhouse') {
+    return <MedievalShop6x4 position={actualPos} rotation={actualRot} scale={actualScale} hasChimney={true} />;
+  }
+
+  if (type === 'lakeside_shack') {
+    return <MedievalCottage4x4 position={actualPos} rotation={actualRot} scale={actualScale} wallType="plaster" doorType="flat" hasPorch={true} />;
+  }
+
   if (config) {
     return <ModularBuilding config={config} />;
   }

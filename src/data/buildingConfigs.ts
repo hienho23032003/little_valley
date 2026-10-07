@@ -74,6 +74,15 @@ export interface BuildingDecorationConfig {
   awningColor?: string;
   hasWeathervane?: boolean;
   hasBelfry?: boolean;
+  hasVines?: boolean;
+  vinePositions?: {
+    position: [number, number, number];
+    rotation?: [number, number, number];
+    scale?: number;
+    variant?: 1 | 2 | 4 | 5 | 6 | 9;
+  }[];
+  hasMegaCrates?: boolean;
+  megaCratePositions?: [number, number, number][];
 }
 
 export interface ModularBuildingConfig {
@@ -199,6 +208,11 @@ export const VILLAGE_BUILDINGS: ModularBuildingConfig[] = [
         { position: [-4.2, 0, 1.0], rotation: Math.PI / 2 },
         { position: [4.2, 0, 1.0], rotation: -Math.PI / 2 },
       ],
+      hasVines: true,
+      vinePositions: [
+        { position: [-3.45, 2.8, -1.0], rotation: [0, -Math.PI / 2, 0], scale: 1.1, variant: 1 },
+        { position: [3.45, 2.8, -1.0], rotation: [0, Math.PI / 2, 0], scale: 1.1, variant: 2 },
+      ],
     },
   },
 
@@ -253,6 +267,13 @@ export const VILLAGE_BUILDINGS: ModularBuildingConfig[] = [
       ],
       hasLanterns: true,
       lanternPositions: [[-0.6, 2.4, 2.9]],
+      hasVines: true,
+      vinePositions: [
+        { position: [2.65, 2.2, 0.8], rotation: [0, Math.PI / 2, 0], scale: 1.0, variant: 4 },
+        { position: [-2.65, 2.2, 1.0], rotation: [0, -Math.PI / 2, 0], scale: 1.0, variant: 1 },
+      ],
+      hasMegaCrates: true,
+      megaCratePositions: [[2.0, 0, 3.1]],
     },
   },
 
@@ -302,6 +323,12 @@ export const VILLAGE_BUILDINGS: ModularBuildingConfig[] = [
       firewoodPosition: [2.5, 0, -1.8],
       hasLanterns: true,
       lanternPositions: [[0.8, 2.2, 3.0]],
+      hasVines: true,
+      vinePositions: [
+        { position: [-2.75, 2.2, -0.6], rotation: [0, -Math.PI / 2, 0], scale: 1.0, variant: 5 },
+      ],
+      hasMegaCrates: true,
+      megaCratePositions: [[-2.5, 0, 3.1]],
     },
   },
 
@@ -403,6 +430,11 @@ export const VILLAGE_BUILDINGS: ModularBuildingConfig[] = [
       benchPositions: [{ position: [2.8, 0, 1.0], rotation: -Math.PI / 2 }],
       hasLanterns: true,
       lanternPositions: [[0, 2.2, 2.5]],
+      hasVines: true,
+      vinePositions: [
+        { position: [-2.45, 2.1, 0.5], rotation: [0, -Math.PI / 2, 0], scale: 0.95, variant: 6 },
+        { position: [2.45, 2.1, 0.5], rotation: [0, Math.PI / 2, 0], scale: 0.95, variant: 9 },
+      ],
     },
   },
 
@@ -456,6 +488,11 @@ export const VILLAGE_BUILDINGS: ModularBuildingConfig[] = [
       flowerPotPositions: [
         [2.0, 0.4, 3.0],
         [2.3, 0.4, 2.5],
+      ],
+      hasVines: true,
+      vinePositions: [
+        { position: [-2.85, 2.4, 0.2], rotation: [0, -Math.PI / 2, 0], scale: 1.0, variant: 1 },
+        { position: [2.85, 2.4, -0.5], rotation: [0, Math.PI / 2, 0], scale: 1.0, variant: 2 },
       ],
     },
   },
@@ -580,6 +617,12 @@ export const VILLAGE_BUILDINGS: ModularBuildingConfig[] = [
       cratePositions: [[1.6, 0, 2.3]],
       hasLanterns: true,
       lanternPositions: [[0, 2.2, 2.4]],
+      hasVines: true,
+      vinePositions: [
+        { position: [-2.25, 2.0, 0.2], rotation: [0, -Math.PI / 2, 0], scale: 0.9, variant: 4 },
+      ],
+      hasMegaCrates: true,
+      megaCratePositions: [[1.8, 0, 2.6]],
     },
   },
 ];

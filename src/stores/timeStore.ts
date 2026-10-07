@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { useFarmStore } from './farmStore';
+import { useFarmStore, TileState } from './farmStore';
 import { useAnimalStore } from './animalStore';
 
 export type Season = 'Spring' | 'Summer' | 'Autumn' | 'Winter';
@@ -143,21 +143,44 @@ export const useTimeStore = create<TimeState>((set, get) => ({
       }
     }
 
-    // 1. Reset daily crop watering states in farmStore
+    // 1. Advance crops that were watered today to next growth stage and reset watering state
     const farmState = useFarmStore.getState();
+    let grownCount = 0;
     const updatedTiles = farmState.tiles.map((tile) => {
       if (tile.crop) {
-        return {
-          ...tile,
-          crop: {
-            ...tile.crop,
-            wateredToday: false, // Reset watered state each morning
-          },
-        };
+        if (tile.crop.wateredToday) {
+          grownCount++;
+          // Watered crops advance to next growth stage (_1 -> _2 -> _3 -> _4)
+          const nextStage = Math.min(3, tile.crop.stage + 1) as 0 | 1 | 2 | 3;
+          const nextProgress = nextStage / 3.0;
+          const nextState: TileState = nextStage === 3 ? 'READY' : 'GROWING';
+          return {
+            ...tile,
+            state: nextState,
+            crop: {
+              ...tile.crop,
+              stage: nextStage,
+              growthProgress: nextProgress,
+              wateredToday: false, // Reset watered state for new morning
+            },
+          };
+        } else {
+          // Unwatered crop does not progress overnight
+          return {
+            ...tile,
+            crop: {
+              ...tile.crop,
+              wateredToday: false,
+            },
+          };
+        }
       }
       return tile;
     });
     useFarmStore.setState({ tiles: updatedTiles });
+    if (grownCount > 0) {
+      useFarmStore.getState().addNotification(`Cây trồng đã lớn thêm một giai đoạn! 🌱`, '🌱', '#52b788');
+    }
     useFarmStore.getState().addNotification(`Day ${nextDay} of ${nextSeason} has begun! 🌅`, '☀️', '#f4a261');
 
     // 2. Reset daily animal states (aging, daily products, hunger)

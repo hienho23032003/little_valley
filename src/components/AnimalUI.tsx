@@ -10,20 +10,20 @@ export const AnimalUI: React.FC = React.memo(() => {
 
   let productPrompt = '';
   let productIcon = '';
-  let feedItemName = 'Wheat';
+  let feedItemName = 'Lúa mì';
 
   if (activeAnimal.species === 'chicken') {
-    productPrompt = 'Collect Egg';
+    productPrompt = 'Thu hoạch trứng';
     productIcon = '🥚';
-    feedItemName = 'Wheat Seeds';
+    feedItemName = 'Hạt lúa mì';
   } else if (activeAnimal.species === 'cow') {
-    productPrompt = 'Milk Cow';
+    productPrompt = 'Vắt sữa tươi';
     productIcon = '🥛';
-    feedItemName = 'Wheat';
+    feedItemName = 'Lúa mì';
   } else if (activeAnimal.species === 'sheep') {
-    productPrompt = 'Shear Wool';
+    productPrompt = 'Xén lông cừu';
     productIcon = '🧶';
-    feedItemName = 'Wheat';
+    feedItemName = 'Lúa mì';
   }
 
   return (
@@ -44,47 +44,47 @@ export const AnimalUI: React.FC = React.memo(() => {
     >
       <div
         style={{
-          background: 'rgba(255, 255, 255, 0.94)',
-          backdropFilter: 'blur(12px)',
-          borderRadius: '20px',
-          padding: '12px 24px',
-          boxShadow: '0 12px 32px rgba(44, 62, 53, 0.18)',
-          border: '2px solid #52b788',
+          background: 'url("/ui/cozy/ui_components/panels/cozy_panel_detail__1000x300.png") no-repeat center / 100% 100%',
+          backgroundColor: 'transparent',
+          borderRadius: 0,
+          padding: '24px 36px',
+          filter: 'drop-shadow(0 16px 36px rgba(70, 40, 15, 0.45))',
+          border: 'none',
           display: 'flex',
           flexDirection: 'column',
           gap: '8px',
-          minWidth: '260px',
+          minWidth: '300px',
         }}
       >
         {/* Header: Name, Species, and Age */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <span style={{ fontSize: '18px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span style={{ fontSize: '22px' }}>
               {activeAnimal.species === 'chicken' ? '🐔' : activeAnimal.species === 'cow' ? '🐄' : '🐑'}
             </span>
-            <span style={{ fontSize: '15px', fontWeight: 800, color: '#2d4734' }}>
+            <span style={{ fontSize: '16px', fontWeight: 900, color: '#4a2810' }}>
               {activeAnimal.name}
             </span>
           </div>
-          <span style={{ fontSize: '11px', color: '#718355', fontWeight: 700 }}>
-            {activeAnimal.species.toUpperCase()} • Day {activeAnimal.age}
+          <span style={{ fontSize: '11px', color: '#8b5e34', fontWeight: 800 }}>
+            {activeAnimal.species.toUpperCase()} • Ngày {activeAnimal.age}
           </span>
         </div>
 
         {/* Meters: Hunger & Happiness */}
-        <div style={{ display: 'flex', gap: '12px', fontSize: '11px', fontWeight: 700 }}>
+        <div style={{ display: 'flex', gap: '14px', fontSize: '11px', fontWeight: 800 }}>
           {/* Hunger Bar */}
           <div style={{ flex: 1 }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', color: '#588157', marginBottom: '2px' }}>
-              <span>Hunger:</span>
+            <div style={{ display: 'flex', justifyContent: 'space-between', color: '#588157', marginBottom: '3px' }}>
+              <span>Độ no:</span>
               <span>{Math.round(activeAnimal.hunger)}%</span>
             </div>
-            <div style={{ width: '100%', height: '5px', background: '#e9ecef', borderRadius: '3px', overflow: 'hidden' }}>
+            <div style={{ width: '100%', height: '7px', background: 'rgba(0,0,0,0.12)', borderRadius: '4px', overflow: 'hidden' }}>
               <div
                 style={{
                   width: `${activeAnimal.hunger}%`,
                   height: '100%',
-                  background: activeAnimal.hunger > 30 ? '#52b788' : '#e76f51',
+                  background: activeAnimal.hunger > 30 ? 'linear-gradient(90deg, #52b788, #40916c)' : '#e76f51',
                   transition: 'width 0.2s ease',
                 }}
               />
@@ -93,16 +93,16 @@ export const AnimalUI: React.FC = React.memo(() => {
 
           {/* Happiness Bar */}
           <div style={{ flex: 1 }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', color: '#e63946', marginBottom: '2px' }}>
-              <span>Happiness:</span>
+            <div style={{ display: 'flex', justifyContent: 'space-between', color: '#e63946', marginBottom: '3px' }}>
+              <span>Thân thiết:</span>
               <span>{Math.round(activeAnimal.happiness)}%</span>
             </div>
-            <div style={{ width: '100%', height: '5px', background: '#e9ecef', borderRadius: '3px', overflow: 'hidden' }}>
+            <div style={{ width: '100%', height: '7px', background: 'rgba(0,0,0,0.12)', borderRadius: '4px', overflow: 'hidden' }}>
               <div
                 style={{
                   width: `${activeAnimal.happiness}%`,
                   height: '100%',
-                  background: '#ff758f',
+                  background: 'linear-gradient(90deg, #ff758f, #e63946)',
                   transition: 'width 0.2s ease',
                 }}
               />
@@ -111,39 +111,39 @@ export const AnimalUI: React.FC = React.memo(() => {
         </div>
 
         {/* Action Prompts */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '2px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '4px' }}>
           {activeAnimal.isProductReady ? (
             <div
               style={{
                 display: 'flex',
                 alignItems: 'center',
                 gap: '8px',
-                background: '#e9f5db',
-                padding: '4px 10px',
-                borderRadius: '10px',
-                border: '1px solid #718355',
+                background: 'url("/ui/cozy/ui_components/buttons/cozy_button_primary_normal__353x76.png") no-repeat center / 100% 100%',
+                padding: '8px 16px',
+                border: 'none',
                 width: '100%',
                 justifyContent: 'center',
+                filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))',
               }}
             >
               <span
                 style={{
-                  background: '#2d4734',
+                  background: 'rgba(74, 40, 16, 0.4)',
                   color: '#fff',
                   borderRadius: '6px',
-                  padding: '2px 6px',
+                  padding: '2px 8px',
                   fontSize: '11px',
-                  fontWeight: 800,
+                  fontWeight: 900,
                 }}
               >
                 E
               </span>
-              <span style={{ fontSize: '13px', fontWeight: 800, color: '#2d4734' }}>
+              <span style={{ fontSize: '13px', fontWeight: 900, color: '#5a3407', textShadow: '0 1px 2px rgba(255,255,255,0.7)' }}>
                 {productIcon} {productPrompt}!
               </span>
             </div>
           ) : (
-            <div style={{ display: 'flex', gap: '6px', width: '100%' }}>
+            <div style={{ display: 'flex', gap: '8px', width: '100%' }}>
               {/* Feed Prompt */}
               <div
                 style={{
@@ -151,28 +151,28 @@ export const AnimalUI: React.FC = React.memo(() => {
                   display: 'flex',
                   alignItems: 'center',
                   gap: '6px',
-                  background: '#f8f9fa',
-                  padding: '4px 8px',
-                  borderRadius: '8px',
-                  border: '1px solid #dee2e6',
+                  background: 'url("/ui/cozy/ui_components/buttons/cozy_button_secondary_normal__356x77.png") no-repeat center / 100% 100%',
+                  padding: '7px 12px',
+                  border: 'none',
                   fontSize: '11px',
-                  color: '#344e41',
+                  color: '#ffffff',
+                  textShadow: '0 1px 3px rgba(0,0,0,0.7)',
+                  filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))',
                 }}
               >
                 <span
-                  className="keyboard-shortcut-hint"
                   style={{
-                    background: '#588157',
+                    background: 'rgba(0,0,0,0.3)',
                     color: '#fff',
-                    borderRadius: '4px',
-                    padding: '1px 5px',
+                    borderRadius: '5px',
+                    padding: '2px 6px',
                     fontSize: '10px',
-                    fontWeight: 800,
+                    fontWeight: 900,
                   }}
                 >
                   F / E
                 </span>
-                <span style={{ fontWeight: 700 }}>Feed {feedItemName}</span>
+                <span style={{ fontWeight: 800 }}>Cho ăn {feedItemName}</span>
               </div>
 
               {/* Pet Prompt */}
@@ -181,28 +181,28 @@ export const AnimalUI: React.FC = React.memo(() => {
                   display: 'flex',
                   alignItems: 'center',
                   gap: '6px',
-                  background: '#fff0f3',
-                  padding: '4px 8px',
-                  borderRadius: '8px',
-                  border: '1px solid #ffccd5',
+                  background: 'url("/ui/cozy/ui_components/buttons/cozy_button_secondary_normal__356x77.png") no-repeat center / 100% 100%',
+                  padding: '7px 12px',
+                  border: 'none',
                   fontSize: '11px',
-                  color: '#c9184a',
+                  color: '#ffffff',
+                  textShadow: '0 1px 3px rgba(0,0,0,0.7)',
+                  filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))',
                 }}
               >
                 <span
-                  className="keyboard-shortcut-hint"
                   style={{
-                    background: '#e63946',
+                    background: 'rgba(230, 57, 70, 0.7)',
                     color: '#fff',
-                    borderRadius: '4px',
-                    padding: '1px 5px',
+                    borderRadius: '5px',
+                    padding: '2px 6px',
                     fontSize: '10px',
-                    fontWeight: 800,
+                    fontWeight: 900,
                   }}
                 >
                   P
                 </span>
-                <span style={{ fontWeight: 700 }}>Pet ❤️</span>
+                <span style={{ fontWeight: 800 }}>Vuốt ve ❤️</span>
               </div>
             </div>
           )}

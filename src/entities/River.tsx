@@ -5,6 +5,7 @@ import { PALETTE } from '../utils/colors';
 import { useGameStore } from '../stores/gameStore';
 import { RIVER_WATER_CONFIG, LAKE_WATER_CONFIG } from './water/waterConfig';
 import { createWaterMaterial } from './water/waterShaders';
+import { MedievalCratesStack, MedievalCrate } from './environment/MedievalProps';
 
 interface RiverProps {
   centerZ?: number;
@@ -243,6 +244,10 @@ export const River: React.FC<RiverProps> = React.memo(({
             </mesh>
           </group>
         </group>
+
+        {/* Fishing Tackle & Catch Cargo Crates */}
+        <MedievalCratesStack position={[-4.0, 0, 1.4]} rotation={0.2} scale={0.85} />
+        <MedievalCrate position={[3.2, 0.25, -0.7]} rotation={-0.15} scale={0.75} />
 
         {/* Moored Wooden Rowboat floating beside the pier */}
         <group ref={boatRef} position={[2.5, -0.10, 2.5]} rotation={[0, 0.15, 0]}>

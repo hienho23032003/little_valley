@@ -23,18 +23,22 @@ export const FarmingUI: React.FC = React.memo(() => {
   let promptText = '';
   let promptSubtext = '';
   let promptBadge = '';
+  let promptImg = '';
 
   if (activeTile) {
     switch (activeTile.state) {
       case 'EMPTY':
-        promptText = 'Plow Soil';
-        promptSubtext = 'Prepare tile for planting crops';
+        promptText = 'Cuốc xới đất';
+        promptSubtext = 'Chuẩn bị ô đất để gieo hạt giống';
         promptBadge = '⛏️';
         break;
       case 'PLOWED': {
-        promptText = `Plant ${currentCropDef.name}`;
-        promptSubtext = `${seedStock} seeds in inventory • Keys 1-9 to select item`;
+        promptText = `Gieo hạt ${currentCropDef.name}`;
+        promptSubtext = `Còn ${seedStock} hạt trong túi • Nhấn phím 1-9 để đổi hạt giống`;
         promptBadge = currentCropDef.icon;
+        if (activeCropType === 'carrot') promptImg = '/icons/veggies/icon-carrot.png';
+        else if (activeCropType === 'tomato') promptImg = '/icons/veggies/icon-tomato.png';
+        else if (activeCropType === 'pumpkin') promptImg = '/icons/veggies/icon-pumpkin.png';
         break;
       }
       case 'PLANTED':
@@ -44,12 +48,12 @@ export const FarmingUI: React.FC = React.memo(() => {
           const cropDef = CROPS[crop.cropType];
           const pct = Math.floor(crop.growthProgress * 100);
           if (!crop.wateredToday) {
-            promptText = `Water ${cropDef.name}`;
-            promptSubtext = `Unwatered grows slower (${pct}% grown) • Press [E] or [Q] to water`;
-            promptBadge = '💧';
+            promptText = `Tưới nước cho ${cropDef.name}`;
+            promptSubtext = `Đang khô hạn (${pct}% tiến độ) • Nhấn [E] hoặc [Q] để tưới`;
+            promptImg = '/ui/cozy/icons/cozy_icon_watering_can__87x77.png';
           } else {
-            promptText = `${cropDef.name} Growing...`;
-            promptSubtext = `${pct}% ready • 💧 Watered & growing at normal speed`;
+            promptText = `${cropDef.name} đang lớn...`;
+            promptSubtext = `Đã tưới nước (${pct}% lớn) • Sinh trưởng khỏe mạnh`;
             promptBadge = '🌱';
           }
         }
@@ -59,9 +63,12 @@ export const FarmingUI: React.FC = React.memo(() => {
         const crop = activeTile.crop;
         if (crop) {
           const cropDef = CROPS[crop.cropType];
-          promptText = `Harvest ${cropDef.name}!`;
-          promptSubtext = `Press [E] to harvest into inventory`;
+          promptText = `Thu hoạch ${cropDef.name}!`;
+          promptSubtext = `Nhấn [E] để thu hoạch vào ba lô`;
           promptBadge = '✨';
+          if (crop.cropType === 'carrot') promptImg = '/icons/veggies/icon-carrot.png';
+          else if (crop.cropType === 'tomato') promptImg = '/icons/veggies/icon-tomato.png';
+          else if (crop.cropType === 'pumpkin') promptImg = '/icons/veggies/icon-pumpkin.png';
         }
         break;
       }
@@ -90,12 +97,12 @@ export const FarmingUI: React.FC = React.memo(() => {
         >
           <div
             style={{
-              background: 'rgba(255, 255, 255, 0.94)',
-              backdropFilter: 'blur(12px)',
-              borderRadius: '20px',
-              padding: '12px 24px',
-              boxShadow: '0 12px 32px rgba(44, 62, 53, 0.18)',
-              border: '2px solid #a3b18a',
+              background: 'url("/ui/cozy/ui_components/panels/cozy_panel_detail__1000x300.png") no-repeat center / 100% 100%',
+              backgroundColor: 'transparent',
+              borderRadius: 0,
+              padding: '20px 36px',
+              filter: 'drop-shadow(0 16px 36px rgba(70, 40, 15, 0.45))',
+              border: 'none',
               display: 'flex',
               alignItems: 'center',
               gap: '14px',
@@ -107,14 +114,16 @@ export const FarmingUI: React.FC = React.memo(() => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                width: '36px',
-                height: '36px',
-                background: '#588157',
-                color: '#fff',
-                borderRadius: '10px',
+                width: '44px',
+                height: '44px',
+                background: 'url("/ui/cozy/ui_components/buttons/cozy_button_primary_normal__353x76.png") no-repeat center / 100% 100%',
+                color: '#5a3407',
+                borderRadius: 0,
                 fontSize: '18px',
-                fontWeight: 800,
-                boxShadow: '0 3px 0 #344e41',
+                fontWeight: 900,
+                filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.25))',
+                border: 'none',
+                textShadow: '0 1px 2px rgba(255,255,255,0.7)',
               }}
             >
               E
@@ -124,21 +133,25 @@ export const FarmingUI: React.FC = React.memo(() => {
               <div
                 style={{
                   fontSize: '16px',
-                  fontWeight: 800,
-                  color: '#344e41',
+                  fontWeight: 900,
+                  color: '#4a2810',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '6px',
+                  gap: '8px',
                 }}
               >
-                <span>{promptBadge}</span>
+                {promptImg ? (
+                  <img src={promptImg} alt="" style={{ width: '22px', height: '22px', objectFit: 'contain' }} />
+                ) : (
+                  <span>{promptBadge}</span>
+                )}
                 <span>{promptText}</span>
               </div>
               <div
                 style={{
                   fontSize: '12px',
-                  fontWeight: 600,
-                  color: '#588157',
+                  fontWeight: 700,
+                  color: '#7f5539',
                   marginTop: '2px',
                 }}
               >
@@ -149,7 +162,7 @@ export const FarmingUI: React.FC = React.memo(() => {
         </div>
       )}
 
-      {/* 2. Floating Harvest Notifications ("+1 Wheat") */}
+      {/* 2. Floating Harvest Notifications with Cozy Free Banner Texture */}
       <div
         style={{
           position: 'absolute',
@@ -167,18 +180,19 @@ export const FarmingUI: React.FC = React.memo(() => {
           <div
             key={notif.id}
             style={{
-              background: 'rgba(255, 255, 255, 0.96)',
-              backdropFilter: 'blur(10px)',
-              borderRadius: '14px',
-              padding: '10px 18px',
-              boxShadow: '0 8px 24px rgba(44, 62, 53, 0.2)',
-              border: '2px solid #588157',
-              color: notif.color || '#344e41',
-              fontSize: '15px',
-              fontWeight: 800,
+              background: 'url("/ui/cozy/ui_components/other_controls/cozy_banner_notification__408x71.png") no-repeat center / 100% 100%',
+              minWidth: '220px',
+              height: '48px',
+              padding: '0 24px',
               display: 'flex',
               alignItems: 'center',
-              gap: '8px',
+              justifyContent: 'center',
+              gap: '10px',
+              color: '#4a2810',
+              fontSize: '14px',
+              fontWeight: 900,
+              textShadow: '0 1px 1px rgba(255,255,255,0.8)',
+              filter: 'drop-shadow(0 6px 14px rgba(0,0,0,0.22))',
               animation: 'floatUp 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28)',
             }}
           >

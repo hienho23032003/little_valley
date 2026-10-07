@@ -1,5 +1,10 @@
 import React from 'react';
 import { PALETTE } from '../../utils/colors';
+import {
+  MedievalWagon,
+  MedievalCrate,
+  MedievalCratesStack,
+} from './MedievalProps';
 
 export const WorldPointsOfInterest: React.FC = React.memo(() => {
   return (
@@ -119,20 +124,14 @@ export const WorldPointsOfInterest: React.FC = React.memo(() => {
 
         {/* Supply Crates & Barrels by Mine */}
         <group position={[3.2, 0, 2.5]}>
-          <mesh position={[0, 0.4, 0]} castShadow receiveShadow>
-            <boxGeometry args={[0.8, 0.8, 0.8]} />
-            <meshStandardMaterial color={PALETTE.woodLight} roughness={0.85} flatShading />
-          </mesh>
-          <mesh position={[0.2, 0.95, 0]} rotation={[0, 0.3, 0]} castShadow>
-            <boxGeometry args={[0.6, 0.6, 0.6]} />
-            <meshStandardMaterial color={PALETTE.woodPlank} roughness={0.85} flatShading />
-          </mesh>
+          <MedievalCratesStack position={[0, 0, 0]} scale={0.9} />
           {/* Ore Barrel */}
-          <mesh position={[-0.9, 0.45, 0.2]} castShadow>
+          <mesh position={[-1.2, 0.45, 0.2]} castShadow>
             <cylinderGeometry args={[0.35, 0.38, 0.9, 8]} />
             <meshStandardMaterial color={PALETTE.woodDark} roughness={0.9} flatShading />
           </mesh>
         </group>
+        <MedievalCrate position={[-3.5, 0, 1.5]} rotation={0.25} scale={0.85} />
       </group>
 
       {/* ========================================================
@@ -229,6 +228,10 @@ export const WorldPointsOfInterest: React.FC = React.memo(() => {
             <meshStandardMaterial color={PALETTE.woodMedium} roughness={0.9} flatShading />
           </mesh>
         </group>
+
+        {/* Medieval Timber Wagon & Tool Crates */}
+        <MedievalWagon position={[3.5, 0, -3.2]} rotation={[0, 0.85, 0]} scale={0.95} />
+        <MedievalCratesStack position={[-3.2, 0, 2.0]} rotation={0.2} scale={0.88} />
       </group>
 
       {/* ========================================================
@@ -277,6 +280,11 @@ export const WorldPointsOfInterest: React.FC = React.memo(() => {
             <meshStandardMaterial color={PALETTE.pumpkinOrange} roughness={0.4} flatShading />
           </mesh>
         </group>
+
+        {/* Medieval Market Produce Wagon & Stacked Cargo */}
+        <MedievalWagon position={[3.2, 0, -1.8]} rotation={[0, -0.4, 0]} scale={0.95} />
+        <MedievalCratesStack position={[-2.0, 0, 0.4]} rotation={-0.15} scale={0.85} />
+        <MedievalCrate position={[4.2, 0, 0.8]} rotation={0.3} scale={0.8} />
       </group>
     </group>
   );

@@ -1,6 +1,4 @@
-import React, { useRef } from 'react';
-import { useFrame } from '@react-three/fiber';
-import * as THREE from 'three';
+import React from 'react';
 import { PALETTE } from '../../../utils/colors';
 import {
   ModularBuildingConfig,
@@ -18,6 +16,11 @@ import {
   BelfryTower,
   WeathervaneFinial,
 } from './BuildingProps';
+import {
+  MedievalChimney,
+  MedievalVine,
+  MedievalCratesStack,
+} from '../../environment/MedievalProps';
 
 // ----------------------------------------------------------------------
 // 1. FOUNDATION COMPONENT WITH STONE STEP
@@ -647,54 +650,16 @@ export const ModularChimney: React.FC<{
   height?: number;
   material?: 'brick' | 'stone';
 }> = ({ position, height = 2.0, material = 'brick' }) => {
-  const smokeRef = useRef<THREE.Group>(null);
-
-  useFrame((state) => {
-    if (!smokeRef.current) return;
-    const t = state.clock.getElapsedTime();
-    smokeRef.current.children.forEach((puff, idx) => {
-      puff.position.y = height + 0.3 + ((t * 0.75 + idx * 0.55) % 1.3);
-      const sc = 0.16 + (((t * 0.75 + idx * 0.55) % 1.3) / 1.3) * 0.24;
-      puff.scale.set(sc, sc, sc);
-      puff.position.x = Math.sin(t * 1.4 + idx) * 0.09;
-    });
-  });
-
   const isStone = material === 'stone';
+  const scale = height / 3.0;
 
   return (
-    <group position={position}>
-      {/* Chimney Shaft */}
-      <mesh position={[0, height / 2, 0]} castShadow>
-        <boxGeometry args={[0.62, height, 0.62]} />
-        <meshStandardMaterial
-          color={isStone ? PALETTE.rockDark : PALETTE.chimneyBrick}
-          roughness={0.92}
-          flatShading
-        />
-      </mesh>
-      {/* Stone Cap Rim */}
-      <mesh position={[0, height + 0.06, 0]} castShadow>
-        <boxGeometry args={[0.74, 0.12, 0.74]} />
-        <meshStandardMaterial color={PALETTE.rockDark} roughness={0.9} flatShading />
-      </mesh>
-
-      {/* Low-Poly Smoke Puffs */}
-      <group ref={smokeRef}>
-        {[0, 1, 2].map((idx) => (
-          <mesh key={`smoke-${idx}`} position={[0, height + 0.3, 0]}>
-            <dodecahedronGeometry args={[0.22, 0]} />
-            <meshStandardMaterial
-              color={PALETTE.chimneySmoke}
-              roughness={0.5}
-              transparent
-              opacity={0.65 - idx * 0.15}
-              flatShading
-            />
-          </mesh>
-        ))}
-      </group>
-    </group>
+    <MedievalChimney
+      position={position}
+      scale={scale}
+      variant={isStone ? 2 : 1}
+      hasSmoke={true}
+    />
   );
 };
 
@@ -974,6 +939,28 @@ export const ModularBuilding: React.FC<{
                 />
               </mesh>
             </group>
+          ))}
+
+        {/* Vines Climbing Walls */}
+        {decorations.hasVines &&
+          decorations.vinePositions?.map((vine, idx) => (
+            <MedievalVine
+              key={`bldg-vine-${idx}`}
+              position={vine.position}
+              rotation={vine.rotation}
+              scale={vine.scale ?? 1}
+              variant={vine.variant ?? 1}
+            />
+          ))}
+
+        {/* MegaKit Stacked Wooden Crates */}
+        {decorations.hasMegaCrates &&
+          decorations.megaCratePositions?.map((pos, idx) => (
+            <MedievalCratesStack
+              key={`bldg-megacrate-${idx}`}
+              position={pos}
+              scale={0.9}
+            />
           ))}
       </group>
     </group>

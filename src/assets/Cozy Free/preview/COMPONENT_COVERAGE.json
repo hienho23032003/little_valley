@@ -1,0 +1,162 @@
+[
+  {
+    "path": "png/ui_components/panels/cozy_panel_detail__1000x300.png",
+    "sheet": "components/ui_components_01.png",
+    "scale": 0.42
+  },
+  {
+    "path": "png/ui_components/panels/cozy_panel_parchment_detail_plain__1155x1263.png",
+    "sheet": "components/ui_components_01.png",
+    "scale": 0.1916072842438638
+  },
+  {
+    "path": "png/ui_components/bars/cozy_bar_frame_parchment__721x80.png",
+    "sheet": "components/ui_components_01.png",
+    "scale": 0.5825242718446602
+  },
+  {
+    "path": "png/ui_components/bars/cozy_bar_fill_lime__702x61.png",
+    "sheet": "components/ui_components_01.png",
+    "scale": 0.5982905982905983
+  },
+  {
+    "path": "png/ui_components/bars/cozy_bar_fill_cyan__702x61.png",
+    "sheet": "components/ui_components_01.png",
+    "scale": 0.5982905982905983
+  },
+  {
+    "path": "png/ui_components/other_controls/cozy_badge_counter__59x59.png",
+    "sheet": "components/ui_components_01.png",
+    "scale": 1
+  },
+  {
+    "path": "png/ui_components/other_controls/cozy_banner_notification__408x71.png",
+    "sheet": "components/ui_components_01.png",
+    "scale": 1
+  },
+  {
+    "path": "png/ui_components/other_controls/cozy_arrow_left__143x112.png",
+    "sheet": "components/ui_components_01.png",
+    "scale": 1
+  },
+  {
+    "path": "png/ui_components/other_controls/cozy_arrow_right__143x112.png",
+    "sheet": "components/ui_components_01.png",
+    "scale": 1
+  },
+  {
+    "path": "png/ui_components/slots_frames/cozy_slot_item_round__134x133.png",
+    "sheet": "components/ui_components_01.png",
+    "scale": 1
+  },
+  {
+    "path": "png/ui_components/slots_frames/cozy_slot_item_round_dimmed__134x133.png",
+    "sheet": "components/ui_components_01.png",
+    "scale": 1
+  },
+  {
+    "path": "png/ui_components/slots_frames/cozy_slot_item_round_selected__152x151.png",
+    "sheet": "components/ui_components_01.png",
+    "scale": 1
+  },
+  {
+    "path": "png/ui_components/buttons/cozy_button_primary_normal__353x76.png",
+    "sheet": "components/ui_components_01.png",
+    "scale": 1
+  },
+  {
+    "path": "png/ui_components/buttons/cozy_button_secondary_normal__356x77.png",
+    "sheet": "components/ui_components_01.png",
+    "scale": 1
+  },
+  {
+    "path": "png/ui_components/buttons/cozy_button_close_normal__100x99.png",
+    "sheet": "components/ui_components_01.png",
+    "scale": 1
+  },
+  {
+    "path": "png/ui_components/buttons/cozy_button_primary_hover__353x76.png",
+    "sheet": "components/ui_components_02.png",
+    "scale": 1
+  },
+  {
+    "path": "png/ui_components/buttons/cozy_button_secondary_hover__356x77.png",
+    "sheet": "components/ui_components_02.png",
+    "scale": 1
+  },
+  {
+    "path": "png/ui_components/buttons/cozy_button_close_hover__100x99.png",
+    "sheet": "components/ui_components_02.png",
+    "scale": 1
+  },
+  {
+    "path": "png/ui_components/buttons/cozy_button_primary_pressed__353x76.png",
+    "sheet": "components/ui_components_02.png",
+    "scale": 1
+  },
+  {
+    "path": "png/ui_components/buttons/cozy_button_secondary_pressed__356x77.png",
+    "sheet": "components/ui_components_02.png",
+    "scale": 1
+  },
+  {
+    "path": "png/ui_components/buttons/cozy_button_close_pressed__100x99.png",
+    "sheet": "components/ui_components_02.png",
+    "scale": 1
+  },
+  {
+    "path": "png/ui_components/buttons/cozy_button_primary_disabled__353x76.png",
+    "sheet": "components/ui_components_02.png",
+    "scale": 1
+  },
+  {
+    "path": "png/ui_components/buttons/cozy_button_secondary_disabled__356x77.png",
+    "sheet": "components/ui_components_02.png",
+    "scale": 1
+  },
+  {
+    "path": "png/ui_components/buttons/cozy_button_close_disabled__100x99.png",
+    "sheet": "components/ui_components_02.png",
+    "scale": 1
+  },
+  {
+    "path": "png/icons/cozy_icon_seed_bag__87x84.png",
+    "sheet": "components/icons_01.png",
+    "scale": 1
+  },
+  {
+    "path": "png/icons/cozy_icon_watering_can__87x77.png",
+    "sheet": "components/icons_01.png",
+    "scale": 1
+  },
+  {
+    "path": "png/icons/cozy_icon_flower__98x119.png",
+    "sheet": "components/icons_01.png",
+    "scale": 1
+  },
+  {
+    "path": "png/icons/cozy_icon_apple__116x113.png",
+    "sheet": "components/icons_01.png",
+    "scale": 1
+  },
+  {
+    "path": "png/icons/cozy_icon_herb_bundle__97x107.png",
+    "sheet": "components/icons_01.png",
+    "scale": 1
+  },
+  {
+    "path": "png/icons/cozy_icon_vegetables__104x77.png",
+    "sheet": "components/icons_01.png",
+    "scale": 1
+  },
+  {
+    "path": "png/icons/cozy_icon_logs__91x74.png",
+    "sheet": "components/icons_01.png",
+    "scale": 1
+  },
+  {
+    "path": "png/icons/cozy_icon_stone__75x62.png",
+    "sheet": "components/icons_01.png",
+    "scale": 1
+  }
+]

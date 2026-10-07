@@ -1,4 +1,4 @@
-export type CropType = 'wheat' | 'corn' | 'carrot' | 'tomato';
+export type CropType = 'wheat' | 'corn' | 'carrot' | 'tomato' | 'pumpkin' | 'eggplant';
 
 export interface CropDefinition {
   id: CropType;
@@ -61,6 +61,30 @@ export const CROPS: Record<CropType, CropDefinition> = {
     seedName: 'Tomato Seeds',
     color: '#d62828',
     icon: '🍅',
+  },
+  pumpkin: {
+    id: 'pumpkin',
+    name: 'Pumpkin',
+    growthTime: 20,
+    seedItem: 'pumpkin_seed',
+    harvestItem: 'pumpkin',
+    sellPrice: 35,
+    description: 'Plump and hearty autumn pumpkin.',
+    seedName: 'Pumpkin Seeds',
+    color: '#f77f00',
+    icon: '🎃',
+  },
+  eggplant: {
+    id: 'eggplant',
+    name: 'Eggplant',
+    growthTime: 16,
+    seedItem: 'eggplant_seed',
+    harvestItem: 'eggplant',
+    sellPrice: 28,
+    description: 'Glossy purple garden eggplant.',
+    seedName: 'Eggplant Seeds',
+    color: '#7209b7',
+    icon: '🍆',
   },
 };
 

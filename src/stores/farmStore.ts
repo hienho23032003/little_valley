@@ -84,21 +84,21 @@ function createDefaultTiles(
     }
   }
 
-  // Pre-seed a couple of tiles so the world immediately looks alive
+  // Pre-seed a couple of tiles so the world immediately looks alive with visible growth stages
   // Tile 0: plowed
   tiles[0].state = 'PLOWED';
-  // Tile 1: planted carrot, stage 1
+  // Tile 1: planted carrot seedling (stage 1)
   tiles[1].state = 'GROWING';
   tiles[1].crop = {
     id: 'pre-crop-1',
     cropType: 'carrot',
-    growthProgress: 0.4,
+    growthProgress: 0.35,
     growthTime: CROPS.carrot.growthTime,
     stage: 1,
     wateredToday: true,
     plantedAt: Date.now(),
   };
-  // Tile 2: ready wheat
+  // Tile 2: golden ready wheat (stage 3)
   tiles[2].state = 'READY';
   tiles[2].crop = {
     id: 'pre-crop-2',
@@ -106,6 +106,28 @@ function createDefaultTiles(
     growthProgress: 1.0,
     growthTime: CROPS.wheat.growthTime,
     stage: 3,
+    wateredToday: true,
+    plantedAt: Date.now(),
+  };
+  // Tile 3: fresh green pumpkin sprout (stage 0)
+  tiles[3].state = 'PLANTED';
+  tiles[3].crop = {
+    id: 'pre-crop-3',
+    cropType: 'pumpkin',
+    growthProgress: 0.1,
+    growthTime: CROPS.pumpkin.growthTime,
+    stage: 0,
+    wateredToday: true,
+    plantedAt: Date.now(),
+  };
+  // Tile 4: growing lush tomato bush (stage 2)
+  tiles[4].state = 'GROWING';
+  tiles[4].crop = {
+    id: 'pre-crop-4',
+    cropType: 'tomato',
+    growthProgress: 0.7,
+    growthTime: CROPS.tomato.growthTime,
+    stage: 2,
     wateredToday: true,
     plantedAt: Date.now(),
   };

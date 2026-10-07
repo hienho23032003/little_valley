@@ -1,0 +1,22 @@
+[
+  {
+    "name": "components/ui_components_01.png",
+    "kind": "included_components",
+    "source": ""
+  },
+  {
+    "name": "components/ui_components_02.png",
+    "kind": "included_components",
+    "source": ""
+  },
+  {
+    "name": "components/icons_01.png",
+    "kind": "included_components",
+    "source": ""
+  },
+  {
+    "name": "cozy_free_usage_example.png",
+    "kind": "free_usage_example",
+    "source": ""
+  }
+]

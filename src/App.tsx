@@ -8,8 +8,15 @@ import { InventoryModal } from './components/InventoryModal';
 import { BuildingMenuModal } from './components/BuildingMenuModal';
 import { BuildPlacementHUD } from './components/BuildPlacementHUD';
 import { VirtualJoystick } from './components/VirtualJoystick';
+import { CharacterSelectScreen } from './components/character-select/CharacterSelectScreen';
+import { FishingMinigameHUD } from './components/fishing/FishingMinigameHUD';
+import { FishCatchCelebrationModal } from './components/fishing/FishCatchCelebrationModal';
+import { useCharacterStore } from './stores/characterStore';
 
 export const App: React.FC = () => {
+  const isCharacterCreated = useCharacterStore((state) => state.isCharacterCreated);
+  const showCharacterModal = useCharacterStore((state) => state.showCharacterModal);
+
   // Sync exact visible visualViewport height to CSS variable --app-height
   // This guarantees zero React re-renders while keeping 100% precision on iPad/iOS browsers
   useEffect(() => {
@@ -52,6 +59,13 @@ export const App: React.FC = () => {
       <InventoryModal />
       <BuildingMenuModal />
       <BuildPlacementHUD />
+
+      {/* 3D Fishing Minigame HUD & Catch Celebration Modal */}
+      <FishingMinigameHUD />
+      <FishCatchCelebrationModal />
+
+      {/* 3D Character Selection & Customization Screen */}
+      {(!isCharacterCreated || showCharacterModal) && <CharacterSelectScreen />}
     </div>
   );
 };

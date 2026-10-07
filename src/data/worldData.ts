@@ -227,7 +227,7 @@ export function generateWorldNature() {
   const randRange = (min: number, max: number) => min + rng() * (max - min);
 
   // 1. Whispering Forest (Northwest: X: -80 to 15, Z: -78 to -26)
-  for (let i = 0; i < 180; i++) {
+  for (let i = 0; i < 36; i++) {
     const x = randRange(-80, 15);
     const z = randRange(-78, -26);
     if (!isPositionInExclusionZone(x, z, 1.4)) {
@@ -255,7 +255,7 @@ export function generateWorldNature() {
   }
 
   // 2. Mountain Foothills (Z: -68 to -56, X: -65 to 65)
-  for (let i = 0; i < 48; i++) {
+  for (let i = 0; i < 12; i++) {
     const x = randRange(-65, 65);
     const z = randRange(-68, -56);
     if (!isPositionInExclusionZone(x, z, 1.3)) {
@@ -274,7 +274,7 @@ export function generateWorldNature() {
   }
 
   // 3. Sunlit Meadow (East: X: 18 to 80, Z: -35 to 30)
-  for (let i = 0; i < 90; i++) {
+  for (let i = 0; i < 20; i++) {
     const x = randRange(18, 80);
     const z = randRange(-35, 30);
     if (!isPositionInExclusionZone(x, z, 1.3)) {
@@ -302,7 +302,7 @@ export function generateWorldNature() {
   }
 
   // 4. Southern Orchard & Verges (South of river: X: -80 to 12, Z: 26 to 80)
-  for (let i = 0; i < 75; i++) {
+  for (let i = 0; i < 16; i++) {
     const x = randRange(-80, 12);
     const z = randRange(26, 80);
     if (!isPositionInExclusionZone(x, z, 1.3)) {
@@ -328,7 +328,7 @@ export function generateWorldNature() {
   }
 
   // 5. Village & Farm Perimeter Trees
-  for (let i = 0; i < 35; i++) {
+  for (let i = 0; i < 8; i++) {
     const x = randRange(-28, 24);
     const z = randRange(-26, 18);
     if (!isPositionInExclusionZone(x, z, 1.4)) {
@@ -354,7 +354,7 @@ export function generateWorldNature() {
   }
 
   // 6. Lake Border Groves (South & East of Lake: X: 14 to 80, Z: 68 to 80)
-  for (let i = 0; i < 28; i++) {
+  for (let i = 0; i < 8; i++) {
     const x = randRange(14, 80);
     const z = randRange(68, 80);
     if (!isPositionInExclusionZone(x, z, 1.3)) {
@@ -371,11 +371,91 @@ export function generateWorldNature() {
     }
   }
 
+  // 7. Weeping Willows along Clearwater River & Azure Lake Shore
+  // North riverbank (X: -75 to 8, Z: 16.5)
+  for (let x = -75; x <= 8; x += 14.0) {
+    const rx = x + randRange(-1.2, 1.2);
+    const rz = 16.5 + randRange(-0.8, 0.8);
+    if (!isPositionInExclusionZone(rx, rz, 0.4)) {
+      const scale = randRange(0.85, 1.25);
+      const y = getTerrainHeight(rx, rz);
+      trees.push({
+        id: `river-willow-north-${Math.round(rx)}`,
+        position: [rx, y, rz],
+        rotation: [0, rng() * Math.PI * 2, 0],
+        scale: [scale, scale, scale],
+        type: 'willow',
+      });
+    }
+  }
+
+  // South riverbank (X: -75 to 8, Z: 26.8)
+  for (let x = -72; x <= 8; x += 14.0) {
+    const rx = x + randRange(-1.2, 1.2);
+    const rz = 26.8 + randRange(-0.6, 0.8);
+    if (!isPositionInExclusionZone(rx, rz, 0.4)) {
+      const scale = randRange(0.85, 1.25);
+      const y = getTerrainHeight(rx, rz);
+      trees.push({
+        id: `river-willow-south-${Math.round(rx)}`,
+        position: [rx, y, rz],
+        rotation: [0, rng() * Math.PI * 2, 0],
+        scale: [scale, scale, scale],
+        type: 'willow',
+      });
+    }
+  }
+
+  // Azure Lake Shoreline Willows (West, North, and South edges)
+  const lakeShorePoints: [number, number][] = [
+    [13.5, 32],
+    [13.8, 55],
+    [32, 21],
+    [58, 21.2],
+    [32, 68],
+    [58, 68],
+  ];
+  lakeShorePoints.forEach(([lx, lz], idx) => {
+    const rx = lx + randRange(-0.8, 0.8);
+    const rz = lz + randRange(-0.8, 0.8);
+    if (!isPositionInExclusionZone(rx, rz, 0.3)) {
+      const scale = randRange(0.9, 1.3);
+      const y = getTerrainHeight(rx, rz);
+      trees.push({
+        id: `lake-willow-${idx}`,
+        position: [rx, y, rz],
+        rotation: [0, rng() * Math.PI * 2, 0],
+        scale: [scale, scale, scale],
+        type: 'willow',
+      });
+    }
+  });
+
+  // 8. Columnar Cypress lining the Arterial Highway
+  for (let z = -58; z <= 28; z += 18) {
+    if (z >= -24 && z <= 5) continue; // Leave village square open
+    [-3.8, 3.8].forEach((sideX, sideIdx) => {
+      const px = sideX + (sideX > 0 ? 0.3 : -0.3);
+      const pz = z + randRange(-0.4, 0.4);
+      if (!isPositionInExclusionZone(px, pz, 0.3)) {
+        const scale = randRange(0.85, 1.15);
+        const y = getTerrainHeight(px, pz);
+        trees.push({
+          id: `road-columnar-${z}-${sideIdx}`,
+          position: [px, y, pz],
+          rotation: [0, rng() * Math.PI * 2, 0],
+          scale: [scale, scale, scale],
+          type: 'columnar',
+        });
+      }
+    });
+  }
+
   // ==========================================
   // ROCKS & BOULDERS
   // ==========================================
   // Mountain Talus Boulders
-  for (let i = 0; i < 55; i++) {
+  for (let i = 0; i < 14; i++) {
     const x = randRange(-68, 68);
     const z = randRange(-68, -54);
     if (!isPositionInExclusionZone(x, z, 0.8)) {
@@ -391,7 +471,7 @@ export function generateWorldNature() {
   }
 
   // Riverbank Rocks
-  for (let i = 0; i < 30; i++) {
+  for (let i = 0; i < 8; i++) {
     const side = i % 2 === 0 ? RIVER_BOUNDS.minZ - 0.3 : RIVER_BOUNDS.maxZ + 0.3;
     const x = randRange(-80, 10);
     if (Math.abs(x) > 3.2) {
@@ -406,8 +486,8 @@ export function generateWorldNature() {
   }
 
   // Lake Shore Rocks
-  for (let i = 0; i < 26; i++) {
-    const angle = (i / 26) * Math.PI * 2;
+  for (let i = 0; i < 8; i++) {
+    const angle = (i / 8) * Math.PI * 2;
     const rx = 44 + Math.cos(angle) * 28.5 + randRange(-1.5, 1.5);
     const rz = 43 + Math.sin(angle) * 22.5 + randRange(-1.5, 1.5);
     if (!(rx >= 13 && rx <= 27 && rz >= 28 && rz <= 36)) {
@@ -422,7 +502,7 @@ export function generateWorldNature() {
   }
 
   // Meadow & Forest Field Stones
-  for (let i = 0; i < 65; i++) {
+  for (let i = 0; i < 12; i++) {
     const x = randRange(-78, 78);
     const z = randRange(-60, 78);
     if (!isPositionInExclusionZone(x, z, 0.8)) {
@@ -440,7 +520,7 @@ export function generateWorldNature() {
   // ==========================================
   // BUSHES
   // ==========================================
-  for (let i = 0; i < 150; i++) {
+  for (let i = 0; i < 40; i++) {
     const x = randRange(-80, 80);
     const z = randRange(-75, 78);
     if (!isPositionInExclusionZone(x, z, 0.7)) {
@@ -459,7 +539,7 @@ export function generateWorldNature() {
   // WILDFLOWERS
   // ==========================================
   const flowerColors = ['#ffd166', '#ff85a1', '#b388eb', '#ffffff', '#70d6ff'];
-  for (let i = 0; i < 280; i++) {
+  for (let i = 0; i < 70; i++) {
     const x = randRange(-76, 76);
     const z = randRange(-55, 76);
     if (!isPositionInExclusionZone(x, z, 0.4)) {
@@ -479,7 +559,7 @@ export function generateWorldNature() {
   // ==========================================
   // GRASS TUFTS
   // ==========================================
-  for (let i = 0; i < 240; i++) {
+  for (let i = 0; i < 60; i++) {
     const x = randRange(-78, 78);
     const z = randRange(-60, 78);
     if (!isPositionInExclusionZone(x, z, 0.4)) {
@@ -497,7 +577,7 @@ export function generateWorldNature() {
   // ==========================================
   // FOREST MUSHROOMS (Red Fly Agaric Toadstools)
   // ==========================================
-  for (let i = 0; i < 80; i++) {
+  for (let i = 0; i < 20; i++) {
     const x = randRange(-75, 10);
     const z = randRange(-75, -28);
     if (!isPositionInExclusionZone(x, z, 0.5)) {
@@ -515,7 +595,7 @@ export function generateWorldNature() {
   // ==========================================
   // FALLEN MOSSY LOGS
   // ==========================================
-  for (let i = 0; i < 24; i++) {
+  for (let i = 0; i < 8; i++) {
     const x = randRange(-75, 70);
     const z = randRange(-70, 70);
     if (!isPositionInExclusionZone(x, z, 1.2)) {

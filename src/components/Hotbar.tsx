@@ -3,6 +3,9 @@ import { useInventoryStore, HOTBAR_SLOTS_COUNT } from '../stores/inventoryStore'
 import { getItemDefinition } from '../data/itemData';
 import { useFarmStore } from '../stores/farmStore';
 
+const SLOT_FRAME_NORMAL = '/ui/cozy/ui_components/slots_frames/cozy_slot_item_round__134x133.png';
+const SLOT_FRAME_SELECTED = '/ui/cozy/ui_components/slots_frames/cozy_slot_item_round_selected__152x151.png';
+
 export const Hotbar: React.FC = React.memo(() => {
   const slots = useInventoryStore((state) => state.slots);
   const selectedHotbarIndex = useInventoryStore((state) => state.selectedHotbarIndex);
@@ -48,7 +51,7 @@ export const Hotbar: React.FC = React.memo(() => {
     <div
       style={{
         position: 'absolute',
-        bottom: 'calc(16px + env(safe-area-inset-bottom, 0px))',
+        bottom: 'calc(14px + env(safe-area-inset-bottom, 0px))',
         left: '50%',
         transform: 'translateX(-50%)',
         display: 'flex',
@@ -58,51 +61,69 @@ export const Hotbar: React.FC = React.memo(() => {
         pointerEvents: 'auto',
         zIndex: 40,
         maxWidth: 'calc(100vw - 20px)',
+        userSelect: 'none',
       }}
     >
-      {/* Selected Item Name Label */}
+      {/* Selected Item Name Label in Cozy Parchment Style */}
       {currentItem && (
         <div
           style={{
-            background: 'rgba(255, 255, 255, 0.94)',
-            backdropFilter: 'blur(8px)',
-            borderRadius: '12px',
-            padding: '4px 14px',
-            fontSize: 'clamp(11px, 1.2vw, 13px)',
+            background: '#fffdf5',
+            borderRadius: '14px',
+            padding: '5px 16px',
+            fontSize: 'clamp(12px, 1.2vw, 14px)',
             fontWeight: 800,
-            color: '#344e41',
-            boxShadow: '0 4px 12px rgba(44, 62, 53, 0.12)',
-            border: '1px solid rgba(255, 255, 255, 0.9)',
+            color: '#78350f',
+            boxShadow: '0 6px 16px rgba(120, 53, 15, 0.15)',
+            border: '2px solid #fed7aa',
             animation: 'fadeInUp 0.12s ease-out',
             display: 'flex',
             alignItems: 'center',
-            gap: '6px',
+            gap: '8px',
             whiteSpace: 'nowrap',
           }}
         >
-          <span>{currentItem.icon}</span>
+          {currentItem.imageIcon ? (
+            <img
+              src={currentItem.imageIcon}
+              alt={currentItem.name}
+              style={{ width: '22px', height: '22px', objectFit: 'contain' }}
+            />
+          ) : (
+            <span style={{ fontSize: '16px' }}>{currentItem.icon}</span>
+          )}
           <span>{currentItem.name}</span>
-          <span style={{ fontSize: '10px', color: '#718355', fontWeight: 600 }}>
-            [{currentItem.category}]
+          <span
+            style={{
+              fontSize: '10px',
+              color: '#b45309',
+              fontWeight: 700,
+              background: '#fef3c7',
+              padding: '2px 6px',
+              borderRadius: '6px',
+            }}
+          >
+            {currentItem.category}
           </span>
         </div>
       )}
 
-      {/* 9 Hotbar Slots Grid with Safe-Area & Touch Scaling */}
+      {/* 9 Hotbar Slots with Cozy Free Round Frames */}
       <div
         style={{
           display: 'flex',
-          gap: 'clamp(4px, 0.6vw, 6px)',
-          background: 'rgba(255, 255, 255, 0.92)',
+          gap: 'clamp(3px, 0.5vw, 6px)',
+          background: 'rgba(255, 253, 245, 0.94)',
           backdropFilter: 'blur(12px)',
-          padding: 'clamp(5px, 0.7vw, 8px)',
-          borderRadius: 'clamp(14px, 1.8vw, 18px)',
-          boxShadow: '0 10px 30px rgba(44, 62, 53, 0.16)',
-          border: '2px solid rgba(255, 255, 255, 0.95)',
+          padding: 'clamp(6px, 0.8vw, 9px)',
+          borderRadius: 'clamp(18px, 2.2vw, 24px)',
+          boxShadow: '0 12px 32px rgba(120, 53, 15, 0.18)',
+          border: '2.5px solid #fed7aa',
           maxWidth: 'calc(100vw - 24px)',
           overflowX: 'auto',
           scrollbarWidth: 'none',
           WebkitOverflowScrolling: 'touch',
+          alignItems: 'center',
         }}
       >
         {hotbarSlots.map((slot, index) => {
@@ -119,77 +140,109 @@ export const Hotbar: React.FC = React.memo(() => {
                 }
               }}
               style={{
-                width: 'clamp(42px, 5.2vw, 54px)',
-                height: 'clamp(42px, 5.2vw, 54px)',
-                minWidth: 'clamp(42px, 5.2vw, 54px)',
-                background: isSelected ? '#588157' : '#f4f7f0',
-                border: isSelected ? '2px solid #2d4734' : '1px solid #d4dec9',
-                borderRadius: 'clamp(10px, 1.4vw, 14px)',
+                width: 'clamp(42px, 4.6vw, 52px)',
+                height: 'clamp(42px, 4.6vw, 52px)',
+                minWidth: 'clamp(42px, 4.6vw, 52px)',
+                background: 'transparent',
+                border: 'none',
+                position: 'relative',
                 display: 'flex',
-                flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
-                position: 'relative',
                 cursor: 'pointer',
-                transition: 'all 0.12s cubic-bezier(0.2, 0, 0, 1)',
-                transform: isSelected ? 'translateY(-3px) scale(1.04)' : 'none',
-                boxShadow: isSelected
-                  ? '0 6px 16px rgba(88, 129, 87, 0.35)'
-                  : '0 2px 4px rgba(0, 0, 0, 0.04)',
+                padding: 0,
+                transition: 'transform 0.14s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                transform: isSelected ? 'translateY(-4px) scale(1.08)' : 'scale(1)',
                 touchAction: 'manipulation',
                 WebkitTapHighlightColor: 'transparent',
               }}
             >
+              {/* Cozy Free Round Slot Frame Texture */}
+              <img
+                src={isSelected ? SLOT_FRAME_SELECTED : SLOT_FRAME_NORMAL}
+                alt="Slot frame"
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'contain',
+                  pointerEvents: 'none',
+                  filter: isSelected ? 'drop-shadow(0 4px 8px rgba(37,99,235,0.4))' : 'none',
+                }}
+              />
+
               {/* Hotkey Number Badge 1-9 */}
               <span
                 style={{
                   position: 'absolute',
-                  top: '2px',
-                  left: '4px',
-                  fontSize: 'clamp(8px, 1.1vw, 10px)',
-                  fontWeight: 800,
-                  color: isSelected ? '#ffffff' : '#7b8f72',
+                  top: '4px',
+                  left: '6px',
+                  fontSize: 'clamp(9px, 1.1vw, 11px)',
+                  fontWeight: 900,
+                  color: isSelected ? '#1d4ed8' : '#78350f',
+                  zIndex: 2,
+                  textShadow: '0 1px 2px rgba(255,255,255,0.8)',
                 }}
               >
                 {index + 1}
               </span>
 
-              {/* Item Icon Placeholder */}
-              {itemDef ? (
-                <span
+              {/* Cozy Item Icon or fallback emoji */}
+              {itemDef && (
+                <div
                   style={{
-                    fontSize: 'clamp(18px, 2.4vw, 24px)',
-                    lineHeight: '1',
-                    filter: 'drop-shadow(0 2px 3px rgba(0,0,0,0.15))',
+                    position: 'relative',
+                    zIndex: 1,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '68%',
+                    height: '68%',
                   }}
                 >
-                  {itemDef.icon}
-                </span>
-              ) : (
-                <span
-                  style={{
-                    width: 'clamp(14px, 1.8vw, 18px)',
-                    height: 'clamp(14px, 1.8vw, 18px)',
-                    borderRadius: '5px',
-                    background: 'rgba(0,0,0,0.04)',
-                  }}
-                />
+                  {itemDef.imageIcon ? (
+                    <img
+                      src={itemDef.imageIcon}
+                      alt={itemDef.name}
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'contain',
+                        filter: 'drop-shadow(0 3px 4px rgba(0,0,0,0.18))',
+                      }}
+                    />
+                  ) : (
+                    <span
+                      style={{
+                        fontSize: 'clamp(20px, 2.6vw, 26px)',
+                        lineHeight: 1,
+                        filter: 'drop-shadow(0 2px 3px rgba(0,0,0,0.15))',
+                      }}
+                    >
+                      {itemDef.icon}
+                    </span>
+                  )}
+                </div>
               )}
 
-              {/* Quantity Stack Badge (e.g. x15) */}
+              {/* Cozy Free Quantity Badge */}
               {slot.quantity > 1 && (
                 <span
                   style={{
                     position: 'absolute',
-                    bottom: '2px',
-                    right: '3px',
-                    fontSize: 'clamp(9px, 1.2vw, 11px)',
-                    fontWeight: 800,
-                    color: isSelected ? '#ffffff' : '#344e41',
-                    background: isSelected ? 'rgba(0,0,0,0.25)' : 'rgba(255,255,255,0.7)',
-                    borderRadius: '5px',
-                    padding: '0 3px',
-                    lineHeight: '1.2',
+                    bottom: '3px',
+                    right: '4px',
+                    background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+                    color: '#ffffff',
+                    fontSize: 'clamp(9px, 1.1vw, 11px)',
+                    fontWeight: 900,
+                    padding: '1px 5px',
+                    borderRadius: '8px',
+                    boxShadow: '0 2px 5px rgba(0,0,0,0.25)',
+                    border: '1px solid #ffffff',
+                    zIndex: 3,
+                    fontVariantNumeric: 'tabular-nums',
                   }}
                 >
                   {slot.quantity}

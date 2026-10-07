@@ -7,6 +7,9 @@ import { useAnimalStore } from '../stores/animalStore';
 import { ClockWidget } from './ClockWidget';
 import { performInteract, getContextualAction } from '../systems/actionManager';
 import { getRegionAtPosition } from '../data/worldRegions';
+import { useCharacterStore } from '../stores/characterStore';
+import { CHARACTERS } from '../data/characterData';
+import { CozyButton } from './ui/CozyUIComponents';
 
 /**
  * Isolated LocationBadge: throttled subscription so UIOverlay does NOT re-render on every frame!
@@ -36,12 +39,12 @@ const LocationBadge: React.FC = () => {
   return (
     <div
       style={{
-        background: 'rgba(255, 255, 255, 0.88)',
+        background: 'rgba(248, 236, 218, 0.95)',
         backdropFilter: 'blur(8px)',
-        borderRadius: '16px',
-        padding: '10px 16px',
-        boxShadow: '0 8px 24px rgba(70, 90, 80, 0.12)',
-        border: '1px solid rgba(255, 255, 255, 0.9)',
+        borderRadius: '18px',
+        padding: '10px 18px',
+        boxShadow: '0 8px 24px rgba(100, 60, 20, 0.16)',
+        border: '2px solid #ddb892',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'flex-end',
@@ -52,11 +55,11 @@ const LocationBadge: React.FC = () => {
           fontSize: '10px',
           textTransform: 'uppercase',
           letterSpacing: '0.08em',
-          fontWeight: 700,
-          color: '#7b9e73',
+          fontWeight: 800,
+          color: '#8b5e34',
         }}
       >
-        Current Location
+        Vị trí hiện tại
       </span>
       <span
         style={{
@@ -98,6 +101,64 @@ const WalkingBadge: React.FC = React.memo(() => {
     >
       Walking
     </span>
+  );
+});
+
+const PlayerProfileBadge: React.FC = React.memo(() => {
+  const selectedCharacterId = useCharacterStore((state) => state.selectedCharacterId);
+  const playerName = useCharacterStore((state) => state.playerName);
+  const farmName = useCharacterStore((state) => state.farmName);
+  const openCharacterModal = useCharacterStore((state) => state.openCharacterModal);
+  const hero = CHARACTERS[selectedCharacterId] || CHARACTERS.knight;
+
+  return (
+    <button
+      onClick={() => openCharacterModal()}
+      title="Đổi nhân vật & trang phục [C]"
+      style={{
+        pointerEvents: 'auto',
+        background: 'rgba(248, 236, 218, 0.95)',
+        backdropFilter: 'blur(8px)',
+        borderRadius: '16px',
+        padding: '8px 14px',
+        boxShadow: '0 8px 24px rgba(70, 90, 80, 0.12)',
+        border: '1.5px solid #fed7aa',
+        cursor: 'pointer',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '10px',
+        marginTop: '8px',
+        transition: 'transform 0.15s ease',
+      }}
+      onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.02)')}
+      onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
+    >
+      <div
+        style={{
+          width: '36px',
+          height: '36px',
+          borderRadius: '50%',
+          border: '2px solid #3b82f6',
+          overflow: 'hidden',
+          background: '#eff6ff',
+          flexShrink: 0,
+        }}
+      >
+        <img
+          src={hero.avatar}
+          alt={hero.name}
+          style={{ width: '100%', height: '100%', objectFit: 'cover', transform: 'scale(1.3) translateY(2px)' }}
+        />
+      </div>
+      <div style={{ textAlign: 'left' }}>
+        <div style={{ fontSize: '13px', fontWeight: 800, color: '#1e293b' }}>
+          {playerName} • {hero.name}
+        </div>
+        <div style={{ fontSize: '11px', fontWeight: 600, color: '#854d0e' }}>
+          {farmName || 'Nông trại Mây Hồng'} ✏️
+        </div>
+      </div>
+    </button>
   );
 });
 
@@ -181,6 +242,22 @@ const ContextInteractButton: React.FC = React.memo(() => {
 export const UIOverlay: React.FC = React.memo(() => {
   const resetToSpawn = useGameStore((state) => state.resetToSpawn);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (['input', 'textarea'].includes((e.target as HTMLElement)?.tagName?.toLowerCase())) return;
+      if (e.code === 'KeyC') {
+        const store = useCharacterStore.getState();
+        if (store.showCharacterModal) {
+          store.closeCharacterModal();
+        } else {
+          store.openCharacterModal();
+        }
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   return (
     <div
       style={{
@@ -210,37 +287,42 @@ export const UIOverlay: React.FC = React.memo(() => {
           alignItems: 'flex-start',
         }}
       >
-        <div
-          style={{
-            background: 'rgba(255, 255, 255, 0.88)',
-            backdropFilter: 'blur(8px)',
-            borderRadius: '16px',
-            padding: '14px 20px',
-            boxShadow: '0 8px 24px rgba(70, 90, 80, 0.12)',
-            border: '1px solid rgba(255, 255, 255, 0.9)',
-          }}
-        >
-          <h1
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <div
             style={{
-              margin: 0,
-              fontSize: '22px',
-              fontWeight: 800,
-              color: '#344e41',
-              letterSpacing: '-0.02em',
+              background: 'rgba(255, 255, 255, 0.88)',
+              backdropFilter: 'blur(8px)',
+              borderRadius: '16px',
+              padding: '14px 20px',
+              boxShadow: '0 8px 24px rgba(70, 90, 80, 0.12)',
+              border: '1px solid rgba(255, 255, 255, 0.9)',
             }}
           >
-            Little Valley
-          </h1>
-          <p
-            style={{
-              margin: '3px 0 0 0',
-              fontSize: '12px',
-              fontWeight: 500,
-              color: '#588157',
-            }}
-          >
-            Cozy 3D Low-Poly World
-          </p>
+            <h1
+              style={{
+                margin: 0,
+                fontSize: '22px',
+                fontWeight: 800,
+                color: '#344e41',
+                letterSpacing: '-0.02em',
+              }}
+            >
+              Little Valley
+            </h1>
+            <p
+              style={{
+                margin: '3px 0 0 0',
+                fontSize: '12px',
+                fontWeight: 500,
+                color: '#588157',
+              }}
+            >
+              Cozy 3D Low-Poly World
+            </p>
+          </div>
+
+          {/* Active Hero Profile Badge */}
+          <PlayerProfileBadge />
         </div>
 
         {/* Top-Right: Game Clock & Location */}
@@ -275,7 +357,7 @@ export const UIOverlay: React.FC = React.memo(() => {
             gap: '12px',
           }}
         >
-          <div style={{ display: 'flex', gap: '4px' }}>
+          <div style={{ display: 'flex', gap: '3px' }}>
             {['W', 'A', 'S', 'D'].map((key) => (
               <span
                 key={key}
@@ -283,12 +365,12 @@ export const UIOverlay: React.FC = React.memo(() => {
                   display: 'inline-flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  width: '26px',
-                  height: '26px',
+                  width: '22px',
+                  height: '22px',
                   background: '#f0f3ed',
                   color: '#344e41',
-                  borderRadius: '6px',
-                  fontSize: '12px',
+                  borderRadius: '5px',
+                  fontSize: '11px',
                   fontWeight: 700,
                   boxShadow: '0 2px 0 #cbd5c0',
                 }}
@@ -297,8 +379,8 @@ export const UIOverlay: React.FC = React.memo(() => {
               </span>
             ))}
           </div>
-          <span style={{ fontSize: '13px', color: '#588157', fontWeight: 600 }}>
-            to move • 🖱️ <strong style={{ color: '#344e41' }}>Drag</strong> Orbit 360° • <strong style={{ color: '#344e41' }}>Scroll</strong> Zoom • <strong style={{ color: '#344e41' }}>[E]</strong> Interact • <strong style={{ color: '#344e41' }}>[1-9]</strong> Hotbar • <strong style={{ color: '#344e41' }}>[I]</strong> Bag • <strong style={{ color: '#344e41' }}>[B]</strong> Build
+          <span style={{ fontSize: '12px', color: '#588157', fontWeight: 600 }}>
+            Di chuyển • 🖱️ Xoay 360° • Zoom • <strong style={{ color: '#344e41' }}>[E]</strong> Tương tác
           </span>
           <WalkingBadge />
         </div>
@@ -319,108 +401,47 @@ export const UIOverlay: React.FC = React.memo(() => {
           {/* Coins Badge (isolated & memoized) */}
           <CoinsBadge />
 
-          {/* Build Menu Button */}
-          <button
-            className="action-btn-build"
+          {/* Build Menu Button (Cozy Wood Image Button) */}
+          <CozyButton
+            variant="secondary"
             onClick={() => useBuildStore.getState().toggleBuildMenu()}
-            style={{
-              background: 'rgba(255, 255, 255, 0.92)',
-              backdropFilter: 'blur(8px)',
-              border: '1px solid #b7e4c7',
-              borderRadius: '12px',
-              padding: 'clamp(6px, 1vw, 10px) clamp(10px, 1.3vw, 16px)',
-              color: '#1b4332',
-              fontSize: 'clamp(11px, 1.1vw, 13px)',
-              fontWeight: 700,
-              cursor: 'pointer',
-              boxShadow: '0 8px 24px rgba(70, 90, 80, 0.12)',
-              transition: 'all 0.15s ease',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              touchAction: 'manipulation',
-              whiteSpace: 'nowrap',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = '#d8f3dc';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.92)';
-            }}
+            style={{ minWidth: 'auto', height: '44px', padding: '0 16px', fontSize: '13px' }}
           >
             <span>🔨</span>
-            <span className="action-btn-text">
-              Build<span className="keyboard-shortcut-hint"> [B]</span>
-            </span>
-          </button>
+            <span>Xây dựng [B]</span>
+          </CozyButton>
 
-          {/* Backpack Button */}
-          <button
-            className="action-btn-backpack"
+          {/* Backpack Button (Cozy Wood Image Button) */}
+          <CozyButton
+            variant="secondary"
             onClick={() => useInventoryStore.getState().toggleInventory()}
-            style={{
-              background: 'rgba(255, 255, 255, 0.92)',
-              backdropFilter: 'blur(8px)',
-              border: '1px solid #cbd5c0',
-              borderRadius: '12px',
-              padding: 'clamp(6px, 1vw, 10px) clamp(10px, 1.3vw, 16px)',
-              color: '#2d4734',
-              fontSize: 'clamp(11px, 1.1vw, 13px)',
-              fontWeight: 700,
-              cursor: 'pointer',
-              boxShadow: '0 8px 24px rgba(70, 90, 80, 0.12)',
-              transition: 'all 0.15s ease',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              touchAction: 'manipulation',
-              whiteSpace: 'nowrap',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = '#e9f5db';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.92)';
-            }}
+            style={{ minWidth: 'auto', height: '44px', padding: '0 16px', fontSize: '13px' }}
           >
             <span>🎒</span>
-            <span className="action-btn-text">
-              Backpack<span className="keyboard-shortcut-hint"> [I]</span>
-            </span>
-          </button>
+            <span>Ba lô [I]</span>
+          </CozyButton>
 
-          {/* Reset Button */}
-          <button
-            className="action-btn-reset"
-            onClick={resetToSpawn}
-            title="Reset position to spawn"
-            style={{
-              background: 'rgba(255, 255, 255, 0.88)',
-              backdropFilter: 'blur(8px)',
-              border: 'none',
-              borderRadius: '12px',
-              padding: 'clamp(6px, 1vw, 10px) clamp(8px, 1.2vw, 14px)',
-              color: '#344e41',
-              fontSize: 'clamp(11px, 1.1vw, 13px)',
-              fontWeight: 600,
-              cursor: 'pointer',
-              boxShadow: '0 8px 24px rgba(70, 90, 80, 0.12)',
-              transition: 'all 0.2s ease',
-              touchAction: 'manipulation',
-              whiteSpace: 'nowrap',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = '#e9f5db';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.88)';
-            }}
+          {/* Character Customization Button (Cozy Wood Image Button) */}
+          <CozyButton
+            variant="secondary"
+            onClick={() => useCharacterStore.getState().openCharacterModal()}
+            style={{ minWidth: 'auto', height: '44px', padding: '0 16px', fontSize: '13px' }}
           >
-            <span>↺</span>
-            <span className="action-btn-text">Reset</span>
-          </button>
+            <span>👤</span>
+            <span>Nhân vật [C]</span>
+          </CozyButton>
+
+          {/* Reset Button (Cozy Wood Image Button) */}
+          <CozyButton
+            variant="secondary"
+            onClick={resetToSpawn}
+            style={{ minWidth: 'auto', height: '44px', padding: '0 14px', fontSize: '13px' }}
+          >
+            <span>↺ Reset</span>
+          </CozyButton>
         </div>
       </div>
     </div>
   );
 });
+

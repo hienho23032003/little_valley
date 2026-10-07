@@ -71,16 +71,16 @@ export const Lighting: React.FC = React.memo(() => {
         intensity={1.6}
         color="#fff8e7"
         castShadow
-        shadow-mapSize-width={2048}
-        shadow-mapSize-height={2048}
-        shadow-camera-near={1}
-        shadow-camera-far={240}
-        shadow-camera-left={-56}
-        shadow-camera-right={56}
-        shadow-camera-top={56}
-        shadow-camera-bottom={-56}
-        shadow-bias={-0.00005}
-        shadow-normalBias={0.02}
+        shadow-mapSize-width={1024}
+        shadow-mapSize-height={1024}
+        shadow-camera-near={15}
+        shadow-camera-far={160}
+        shadow-camera-left={-42}
+        shadow-camera-right={42}
+        shadow-camera-top={42}
+        shadow-camera-bottom={-42}
+        shadow-bias={-0.0003}
+        shadow-normalBias={0.03}
       />
     </>
   );

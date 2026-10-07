@@ -4,7 +4,6 @@ import { River } from '../entities/River';
 import { Bridge } from '../entities/Bridge';
 import { Path } from '../entities/Path';
 import { House } from '../entities/House';
-import { FenceLine } from '../entities/Fence';
 import { HayBale, WaterTrough } from '../entities/FarmPlot';
 import { FarmingField } from '../entities/FarmingField';
 import { AnimalsManager } from '../entities/animals/AnimalsManager';
@@ -12,7 +11,13 @@ import { BuildingPlacementManager } from '../entities/buildings/BuildingPlacemen
 import { VillageWell, Signpost, VillageBench, LanternPost } from '../entities/VillageDecor';
 import { InstancedFoliage } from '../entities/environment/InstancedFoliage';
 import { WorldPointsOfInterest } from '../entities/environment/WorldPointsOfInterest';
+import { MedievalWagon, MedievalCratesStack, MedievalFenceLine } from '../entities/environment/MedievalProps';
+import { FarmGardenCompound } from '../entities/FarmGardenDecor';
+import { DogCompanion } from '../entities/animals/DogCompanion';
+import { ButterflySwarm } from '../entities/environment/ButterflySwarm';
+import { StylizedTreesForest } from '../entities/environment/StylizedTreesForest';
 import { Player } from '../entities/Player';
+import { FishingController } from '../entities/fishing/FishingController';
 import { CollisionDebugger } from './CollisionDebugger';
 import { HOUSES, RIVER_BOUNDS, TERRAIN_SIZE, generateWorldNature } from '../data/worldData';
 
@@ -57,20 +62,31 @@ export const World: React.FC = React.memo(() => {
         {/* Interactive 4x4 Farming Field (Plowing, Planting, Watering, Harvesting) */}
         <FarmingField />
 
-        {/* Farm Wooden Fencing */}
+        {/* Medieval Wooden Fencing for Farm & Garden */}
         {/* Right field fence */}
-        <FenceLine start={[4.5, 5.5]} end={[13.5, 5.5]} />
-        <FenceLine start={[13.5, 5.5]} end={[13.5, 16.5]} />
-        <FenceLine start={[13.5, 16.5]} end={[4.5, 16.5]} />
-        <FenceLine start={[4.5, 16.5]} end={[4.5, 10.5]} />
+        <MedievalFenceLine start={[4.5, 5.5]} end={[13.5, 5.5]} />
+        <MedievalFenceLine start={[13.5, 5.5]} end={[13.5, 16.5]} />
+        <MedievalFenceLine start={[13.5, 16.5]} end={[4.5, 16.5]} />
+        <MedievalFenceLine start={[4.5, 16.5]} end={[4.5, 10.5]} />
         {/* Opening between Z=7.5 and Z=10.5 for player to walk in */}
-        <FenceLine start={[4.5, 7.5]} end={[4.5, 5.5]} />
+        <MedievalFenceLine start={[4.5, 7.5]} end={[4.5, 5.5]} />
+
+        {/* Lush Vegetable Gardens (Pumpkins, Cabbages, Scarecrow, Trellis) */}
+        <FarmGardenCompound />
 
         {/* Farm Props */}
         <HayBale position={[3.5, 0, 6.0]} rotation={0.4} />
         <HayBale position={[3.6, 0, 6.4]} rotation={-0.3} />
         <HayBale position={[3.6, 0.7, 6.2]} rotation={0.8} />
         <WaterTrough position={[-6.0, 0, 6.5]} rotation={0.2} />
+        <MedievalWagon position={[-14.5, 0, 16.5]} rotation={[0, -0.4, 0]} scale={1.0} />
+        <MedievalCratesStack position={[3.2, 0, 8.5]} rotation={0.12} scale={0.85} />
+
+        {/* Loyal Farm Companion Pet Dog */}
+        <DogCompanion />
+
+        {/* Ambient Fluttering Butterflies */}
+        <ButterflySwarm />
       </group>
 
       {/* 7. Village Center Decor (Well, Signpost, Benches, Lanterns) */}
@@ -102,9 +118,8 @@ export const World: React.FC = React.memo(() => {
       {/* 8. Regional Points of Interest (Granite Mine, Woodcutter Campsite, Market Stalls, Lake Pier, Shrine) */}
       <WorldPointsOfInterest />
 
-      {/* 9. Instanced Nature Foliage (Hundreds of trees, rocks, bushes, wildflowers, grass, mushrooms, logs) */}
+      {/* 9. Instanced Nature Foliage (Rocks, bushes, wildflowers, grass, mushrooms, logs) */}
       <InstancedFoliage
-        trees={nature.trees}
         rocks={nature.rocks}
         bushes={nature.bushes}
         flowers={nature.flowers}
@@ -113,11 +128,17 @@ export const World: React.FC = React.memo(() => {
         fallenLogs={nature.fallenLogs}
       />
 
+      {/* 9.5 Complete Stylized Trees Forest across the Valley (Oaks, Pines, Willows & Columnars) */}
+      <StylizedTreesForest trees={nature.trees} />
+
       {/* 10. Player Constructed & Placed Buildings & Ghost Placement */}
       <BuildingPlacementManager />
 
       {/* 11. Player Character */}
       <Player />
+
+      {/* 11.5 Complete 3D Fishing System (Bobber, Line, Ambient Fish & Moored Boat) */}
+      <FishingController />
 
       {/* 12. Development Collision Debugger (Toggle via F9 or backtick) */}
       <CollisionDebugger />

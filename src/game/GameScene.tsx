@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, Suspense } from 'react';
 import { Canvas, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { Lighting } from './Lighting';
@@ -18,7 +18,7 @@ export const GameScene: React.FC = () => {
   return (
     <Canvas
       shadows
-      dpr={[1, 1.5]}
+      dpr={[1, 1.35]}
       camera={{
         position: [0, 44, 48],
         fov: 44,
@@ -30,6 +30,15 @@ export const GameScene: React.FC = () => {
         powerPreference: 'high-performance',
         toneMapping: THREE.ACESFilmicToneMapping,
         toneMappingExposure: 1.1,
+      }}
+      onCreated={({ gl }) => {
+        gl.domElement.addEventListener('webglcontextlost', (e) => {
+          e.preventDefault();
+          console.warn('WebGL Context Lost - waiting for restore...');
+        });
+        gl.domElement.addEventListener('webglcontextrestored', () => {
+          console.info('WebGL Context Restored successfully!');
+        });
       }}
       style={{
         position: 'absolute',
@@ -52,8 +61,10 @@ export const GameScene: React.FC = () => {
       {/* Dynamic Elevated 45-degree Follow Camera */}
       <CameraController />
 
-      {/* Complete Low-poly 3D World */}
-      <World />
+      {/* Complete Low-poly 3D World inside Suspense Boundary */}
+      <Suspense fallback={null}>
+        <World />
+      </Suspense>
     </Canvas>
   );
 };

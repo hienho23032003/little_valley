@@ -1,9 +1,48 @@
-import React from 'react';
+import React, { useMemo } from 'react';
+import { useGLTF } from '@react-three/drei';
+import * as THREE from 'three';
 import { PALETTE } from '../../utils/colors';
+import { CozyBarnModel } from '../buildings/CozyBarnModel';
 
 // ======================================================================
 // 1. CHICKEN COOP STRUCTURE (Elevated chunky house, ramp, nesting box, fenced run)
 // ======================================================================
+const CHICKEN_COOP_URL = '/models/farm_buildings/ChickenCoop.glb';
+
+const ChickenCoop3D: React.FC = () => {
+  const { scene } = useGLTF(CHICKEN_COOP_URL);
+  const clone = useMemo(() => {
+    const c = scene.clone(true);
+    c.traverse((child) => {
+      if ((child as THREE.Mesh).isMesh) {
+        const mesh = child as THREE.Mesh;
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
+        if (mesh.material) {
+          const mats = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+          mats.forEach((mat) => {
+            const m = mat as THREE.MeshStandardMaterial;
+            m.metalness = 0;
+            m.roughness = 0.85;
+            if (m.name === 'RoofBlack') {
+              m.color.set('#495057');
+            } else if (m.name === 'DarkRed' || m.name === 'LightRed') {
+              m.color.set('#c84b31');
+            } else if (m.name === 'Brown') {
+              m.color.set('#c08552');
+            } else if (m.name === 'White') {
+              m.color.set('#f4f1de');
+            }
+          });
+        }
+      }
+    });
+    return c;
+  }, [scene]);
+  return <primitive object={clone} scale={[1.4, 1.4, 1.4]} position={[0, 0, 0]} />;
+};
+
+
 export const ChickenCoopStructure: React.FC = () => {
   const honeyWood = '#c08552';
   const darkTimber = '#4a2810';
@@ -15,8 +54,11 @@ export const ChickenCoopStructure: React.FC = () => {
 
   return (
     <group position={[-15.0, 0, 5.5]}>
-      {/* --- A. Elevated Chunky Coop House --- */}
-      <group position={[-1.1, 0, -0.8]}>
+      {/* --- A. Real 3D Chicken Coop House from Quaternius Farm Buildings --- */}
+      <group position={[-1.0, 0, -0.6]}>
+        <ChickenCoop3D />
+      </group>
+      <group visible={false} position={[-1.1, 0, -0.8]}>
         {/* 4 Stone Pad Footings */}
         {[
           [-0.7, -0.6],
@@ -221,173 +263,14 @@ export const ChickenCoopStructure: React.FC = () => {
 // 2. RED BARN STRUCTURE (Classic Rustic Crimson Cattle Barn with Gambrel Roof & Hayloft)
 // ======================================================================
 export const BarnStructure: React.FC = () => {
-  const barnRed = '#a31621';
-  const stoneBase = '#495057';
-  const roofSlate = '#2b2d42';
-  const whiteTrim = '#f8f9fa';
   const timberDark = '#3d2616';
   const hayColor = '#e9c46a';
   const metalColor = '#495057';
 
   return (
     <group position={[9.0, 0, 8.5]}>
-      {/* --- A. Main Red Barn Building (Positioned at North Corner: [1.4, 0, -1.2]) --- */}
-      <group position={[1.4, 0, -1.2]}>
-        {/* Stone Foundation Base */}
-        <mesh position={[0, 0.18, 0]} castShadow receiveShadow>
-          <boxGeometry args={[3.8, 0.36, 3.2]} />
-          <meshStandardMaterial color={stoneBase} roughness={0.92} flatShading />
-        </mesh>
-        {/* Front Stone Step */}
-        <mesh position={[0, 0.1, 1.7]} castShadow receiveShadow>
-          <boxGeometry args={[1.8, 0.2, 0.5]} />
-          <meshStandardMaterial color="#6c757d" roughness={0.9} flatShading />
-        </mesh>
-
-        {/* Main Crimson Barn Body */}
-        <mesh position={[0, 1.55, 0]} castShadow receiveShadow>
-          <boxGeometry args={[3.5, 2.4, 2.9]} />
-          <meshStandardMaterial color={barnRed} roughness={0.82} flatShading />
-        </mesh>
-
-        {/* Chunky White Corner Timber Posts */}
-        {[
-          [-1.76, -1.46],
-          [1.76, -1.46],
-          [-1.76, 1.46],
-          [1.76, 1.46],
-        ].map(([x, z], idx) => (
-          <mesh key={`barn-corner-${idx}`} position={[x, 1.55, z]} castShadow>
-            <boxGeometry args={[0.18, 2.44, 0.18]} />
-            <meshStandardMaterial color={whiteTrim} roughness={0.9} flatShading />
-          </mesh>
-        ))}
-
-        {/* Horizontal White Timber Belt */}
-        <mesh position={[0, 1.55, 0]} castShadow>
-          <boxGeometry args={[3.56, 0.12, 2.96]} />
-          <meshStandardMaterial color={whiteTrim} roughness={0.9} flatShading />
-        </mesh>
-
-        {/* Gambrel (Dutch Barn) Roof */}
-        <group position={[0, 2.75, 0]}>
-          {/* Lower Steep Slopes */}
-          <mesh position={[-1.25, 0.55, 0]} rotation={[0, 0, Math.PI / 3.4]} castShadow receiveShadow>
-            <boxGeometry args={[1.4, 0.18, 3.3]} />
-            <meshStandardMaterial color={roofSlate} roughness={0.75} flatShading />
-          </mesh>
-          <mesh position={[1.25, 0.55, 0]} rotation={[0, 0, -Math.PI / 3.4]} castShadow receiveShadow>
-            <boxGeometry args={[1.4, 0.18, 3.3]} />
-            <meshStandardMaterial color={roofSlate} roughness={0.75} flatShading />
-          </mesh>
-
-          {/* Upper Gentle Slopes */}
-          <mesh position={[-0.5, 1.3, 0]} rotation={[0, 0, Math.PI / 7.5]} castShadow receiveShadow>
-            <boxGeometry args={[1.25, 0.18, 3.3]} />
-            <meshStandardMaterial color={roofSlate} roughness={0.75} flatShading />
-          </mesh>
-          <mesh position={[0.5, 1.3, 0]} rotation={[0, 0, -Math.PI / 7.5]} castShadow receiveShadow>
-            <boxGeometry args={[1.25, 0.18, 3.3]} />
-            <meshStandardMaterial color={roofSlate} roughness={0.75} flatShading />
-          </mesh>
-
-          {/* Ridge Cap Beam */}
-          <mesh position={[0, 1.55, 0]} castShadow>
-            <boxGeometry args={[0.26, 0.2, 3.4]} />
-            <meshStandardMaterial color={whiteTrim} roughness={0.85} flatShading />
-          </mesh>
-
-          {/* Weathervane Rooster Finial */}
-          <group position={[0, 1.7, 0.8]}>
-            <mesh castShadow>
-              <cylinderGeometry args={[0.02, 0.02, 0.45, 4]} />
-              <meshStandardMaterial color={metalColor} metalness={0.7} roughness={0.3} />
-            </mesh>
-            <mesh position={[0, 0.25, 0]} rotation={[0, 0.4, 0]} castShadow>
-              <boxGeometry args={[0.28, 0.14, 0.02]} />
-              <meshStandardMaterial color="#d90429" metalness={0.4} roughness={0.4} />
-            </mesh>
-          </group>
-
-          {/* Front & Back Gable Facades */}
-          {[-1.46, 1.46].map((z, idx) => (
-            <group key={`barn-gable-${idx}`} position={[0, 0.65, z]}>
-              <mesh>
-                <boxGeometry args={[2.8, 1.3, 0.05]} />
-                <meshStandardMaterial color={barnRed} roughness={0.85} flatShading />
-              </mesh>
-              <mesh position={[0, 0.6, 0]}>
-                <boxGeometry args={[2.1, 0.08, 0.07]} />
-                <meshStandardMaterial color={whiteTrim} roughness={0.9} flatShading />
-              </mesh>
-            </group>
-          ))}
-
-          {/* Upper Hayloft Loading Door & Hoist Beam */}
-          <group position={[0, 0.65, 1.5]}>
-            <mesh castShadow>
-              <boxGeometry args={[0.75, 0.85, 0.05]} />
-              <meshStandardMaterial color={whiteTrim} roughness={0.9} />
-            </mesh>
-            <mesh position={[0, 0, 0.02]}>
-              <boxGeometry args={[0.62, 0.72, 0.05]} />
-              <meshStandardMaterial color={barnRed} roughness={0.85} />
-            </mesh>
-            {/* Protruding Hoist Crane Beam */}
-            <mesh position={[0, 0.65, 0.38]} castShadow>
-              <boxGeometry args={[0.12, 0.12, 0.8]} />
-              <meshStandardMaterial color={timberDark} roughness={0.9} flatShading />
-            </mesh>
-            {/* Pulley & Hanging Lantern */}
-            <mesh position={[0, 0.25, 0.65]}>
-              <cylinderGeometry args={[0.015, 0.015, 0.22, 4]} />
-              <meshStandardMaterial color={metalColor} metalness={0.7} />
-            </mesh>
-            <mesh position={[0, 0.1, 0.65]}>
-              <boxGeometry args={[0.09, 0.11, 0.09]} />
-              <meshStandardMaterial color="#ffb703" emissive="#ffb703" emissiveIntensity={0.6} />
-            </mesh>
-          </group>
-        </group>
-
-        {/* Front Barn Sliding Double Doors with White X */}
-        <group position={[0, 1.05, 1.48]}>
-          <mesh>
-            <boxGeometry args={[1.7, 1.65, 0.04]} />
-            <meshStandardMaterial color="#212529" />
-          </mesh>
-          {/* Left Door */}
-          <group position={[-0.42, 0, 0.03]}>
-            <mesh castShadow>
-              <boxGeometry args={[0.78, 1.55, 0.04]} />
-              <meshStandardMaterial color={barnRed} />
-            </mesh>
-            <mesh position={[0, 0, 0.02]} rotation={[0, 0, 0.58]}>
-              <boxGeometry args={[0.07, 1.58, 0.02]} />
-              <meshStandardMaterial color={whiteTrim} />
-            </mesh>
-            <mesh position={[0, 0, 0.02]} rotation={[0, 0, -0.58]}>
-              <boxGeometry args={[0.07, 1.58, 0.02]} />
-              <meshStandardMaterial color={whiteTrim} />
-            </mesh>
-          </group>
-          {/* Right Door */}
-          <group position={[0.42, 0, 0.03]}>
-            <mesh castShadow>
-              <boxGeometry args={[0.78, 1.55, 0.04]} />
-              <meshStandardMaterial color={barnRed} />
-            </mesh>
-            <mesh position={[0, 0, 0.02]} rotation={[0, 0, 0.58]}>
-              <boxGeometry args={[0.07, 1.58, 0.02]} />
-              <meshStandardMaterial color={whiteTrim} />
-            </mesh>
-            <mesh position={[0, 0, 0.02]} rotation={[0, 0, -0.58]}>
-              <boxGeometry args={[0.07, 1.58, 0.02]} />
-              <meshStandardMaterial color={whiteTrim} />
-            </mesh>
-          </group>
-        </group>
-      </group>
+      {/* --- A. Real 3D Cozy Barn & Silo Model from cozyfarmbystyloo --- */}
+      <CozyBarnModel position={[1.4, 0, -1.2]} rotation={0} scale={1.0} />
 
       {/* --- B. Cattle Pasture Props: Hay Trough & Stacked Hay Bales --- */}
       {/* Large Carved Wooden Hay Feeding Trough */}
